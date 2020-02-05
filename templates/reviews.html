@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block content %}
+     {% for review in reviews %}
+            {{review.movie_name}}
+            {{review.category_name}}
+     {% endfor %}
+    
+{% endblock content %}

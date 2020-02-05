@@ -23,10 +23,10 @@ def home():
 def about():
     return render_template('about.html', title='About')
 
-@app.route('/get_categories')
-def get_categories():
-    return render_template("categories.html", 
-                           categories=mongo.db.categories.find())
+@app.route('/reviews')
+def reviews():
+    return render_template("reviews.html", 
+                           reviews=mongo.db.reviews.find())
 
 @app.route("/search")
 def search():
