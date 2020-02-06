@@ -1,17 +1,17 @@
 {% extends 'base.html' %}
 {% block content %}
     
-    <div class="accordion" id="accordionExample">
+    <div class="accordion" id="accordionsection">
         {% for review in reviews %}    
         <div class="card">
-            <div class="card-header" id="headingThree">
+            <div class="card-header" id="heading{{review._id}}">
             <h2 class="mb-0">
-                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#{{review._id}}" aria-expanded="false" aria-controls="{{review._id}}">
                 {{review.username}} -  {{review.review_date}}
                 </button>
             </h2>
             </div>
-            <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+            <div id="{{review._id}}" class="collapse" aria-labelledby="heading{{review._id}}" data-parent="#accordionsection">
             <div class="card-body">
                   {{review.description}}
             </div>
