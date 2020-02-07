@@ -28,6 +28,11 @@ def reviews():
     return render_template("reviews.html", 
                            reviews=mongo.db.reviews.find())
 
+@app.route("/addreview")
+def addreview():
+    return render_template('addreview.html',
+                           categories=mongo.db.categories.find())
+
 @app.route("/search")
 def search():
     return render_template('search.html', title='Search')

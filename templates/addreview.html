@@ -1,0 +1,30 @@
+{% extends 'base.html' %} {% block content %}
+<h3>Add Review</h3>
+<form action="" method="POST">
+  <div class="form-group">
+    <label for="exampleFormControlInput1">Username</label>
+    <input type="text" class="form-control" id="username" placeholder="username">
+  </div>
+   <div class="form-group">
+    <label for="exampleFormControlInput1">Movie Title</label>
+    <input type="text" class="form-control" id="movie_name" placeholder="movie title">
+  </div>
+  <div class="form-group">
+    <label for="exampleFormControlSelect1">Example select</label>
+    <select class="form-control" id="exampleFormControlSelect1">
+    <option value="" disabled selected>Choose Category</option>
+      {% for cat in categories %}
+                      <option value="{{cat.category_name}}">{{cat.category_name}}</option>
+                  {% endfor %}    </select>
+  </div>
+  <div class="form-group">
+    <label for="exampleFormControlTextarea1">Description</label>
+    <textarea class="form-control" id="description" rows="3"></textarea>
+  </div>
+  <div class="form-group">
+    <label for="exampleFormControlInput1">Rating</label>
+    <input type="text" class="form-control" id="movie_rating" placeholder="rating">
+  </div>
+</form>
+
+{% endblock %}
