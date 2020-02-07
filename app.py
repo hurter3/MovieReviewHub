@@ -33,6 +33,12 @@ def addreview():
     return render_template('addreview.html',
                            categories=mongo.db.categories.find())
 
+@app.route('/insertreview', methods=['POST'])
+def insertreview():
+    reviews = mongo.db.reviews
+    reviews.insert_one(request.form.to_dict())
+    return redirect(url_for('reviews'))
+
 @app.route("/search")
 def search():
     return render_template('search.html', title='Search')

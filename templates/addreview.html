@@ -1,17 +1,17 @@
 {% extends 'base.html' %} {% block content %}
 <h3>Add Review</h3>
-<form action="" method="POST">
+<form action="{{ url_for('insertreview') }}" method="POST">
   <div class="form-group">
     <label for="exampleFormControlInput1">Username</label>
-    <input type="text" class="form-control" id="username" placeholder="username">
+    <input type="text" class="form-control" id="username" name="username">
   </div>
    <div class="form-group">
     <label for="exampleFormControlInput1">Movie Title</label>
-    <input type="text" class="form-control" id="movie_name" placeholder="movie title">
+    <input type="text" class="form-control" id="movie_name" name="movie_name">
   </div>
   <div class="form-group">
-    <label for="exampleFormControlSelect1">Example select</label>
-    <select class="form-control" id="exampleFormControlSelect1">
+    <label for="exampleFormControlSelect1">Movie category</label>
+    <select class="form-control" id="category_name" name="category_name">
     <option value="" disabled selected>Choose Category</option>
       {% for cat in categories %}
                       <option value="{{cat.category_name}}">{{cat.category_name}}</option>
@@ -19,11 +19,24 @@
   </div>
   <div class="form-group">
     <label for="exampleFormControlTextarea1">Description</label>
-    <textarea class="form-control" id="description" rows="3"></textarea>
+    <textarea class="form-control" id="description" rows="2" name="description"></textarea>
   </div>
   <div class="form-group">
-    <label for="exampleFormControlInput1">Rating</label>
-    <input type="text" class="form-control" id="movie_rating" placeholder="rating">
+    <label for="exampleFormControlSelect1">Rating</label>
+    <select class="form-control" id="review_rating" name="review_rating">
+      <option value="" disabled selected>Choose a rating, 1 (poor) to 5 (excellent)</option>
+      <option>1</option>
+      <option>2</option>
+      <option>3</option>
+      <option>4</option>
+      <option>5</option>
+    </select>
+  </div>
+   <div class="form-group">
+    <label for="exampleFormControlInput1">Review date</label>
+    <input type="text" class="form-control" id="datepicker" name="review_date">
+  </div>
+  <div> <button class="btn btn-dark" type="submit">Add Review</button>
   </div>
 </form>
 
