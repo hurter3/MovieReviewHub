@@ -31,7 +31,8 @@ def reviews():
 @app.route("/addreview")
 def addreview():
     return render_template('addreview.html',
-                           categories=mongo.db.categories.find())
+                           categories=mongo.db.categories.find(),
+                           ratings=mongo.db.ratings.find())
 
 @app.route('/insertreview', methods=['POST'])
 def insertreview():
@@ -44,7 +45,8 @@ def editreview(review_id):
     the_review =  mongo.db.reviews.find_one({"_id": ObjectId(review_id)})
     all_categories =  mongo.db.categories.find()
     return render_template('editreview.html', review=the_review,
-                           categories=all_categories)    
+                           categories=all_categories,
+                           ratings=mongo.db.ratings.find())
 
 @app.route("/search")
 def search():

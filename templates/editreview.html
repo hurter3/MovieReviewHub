@@ -3,40 +3,48 @@
  <form action="{{ url_for('editreview', review_id=review._id) }}" method="POST">
   <div class="form-group">
     <label for="exampleFormControlInput1">Username</label>
-    <input type="text" class="form-control" id="username" name="username">
+    <input type="text" class="form-control" id="username" name="username" value="{{review.username}}">
   </div>
    <div class="form-group">
     <label for="exampleFormControlInput1">Movie Title</label>
-    <input type="text" class="form-control" id="movie_name" name="movie_name">
+    <input type="text" class="form-control" id="movie_name" name="movie_name" value="{{review.movie_name}}">
   </div>
   <div class="form-group">
     <label for="exampleFormControlSelect1">Movie category</label>
     <select class="form-control" id="category_name" name="category_name">
     <option value="" disabled selected>Choose Category</option>
-      {% for cat in categories %}
-                      <option value="{{cat.category_name}}">{{cat.category_name}}</option>
-                  {% endfor %}    </select>
+                  {% for cat in categories %}
+                      {% if cat.category_name == review.category_name%}
+                      <option value="{{cat.category_name}}" selected >{{cat.category_name}}</option>
+                      {% else %}
+                       <option value="{{cat.category_name}}">{{cat.category_name}}</option>
+                    {% endif %}
+                  {% endfor %}
+    </select>    
   </div>
+
   <div class="form-group">
     <label for="exampleFormControlTextarea1">Description</label>
-    <textarea class="form-control" id="description" rows="2" name="description"></textarea>
+    <textarea class="form-control" id="description" rows="2" name="description">{{review.description}}</textarea>
   </div>
   <div class="form-group">
     <label for="exampleFormControlSelect1">Rating</label>
     <select class="form-control" id="review_rating" name="review_rating">
       <option value="" disabled selected>Choose a rating, 1 (poor) to 5 (excellent)</option>
-      <option>1</option>
-      <option>2</option>
-      <option>3</option>
-      <option>4</option>
-      <option>5</option>
+                  {% for rating in ratings %}
+                      {% if rating.review_rating == review.review_rating %}
+                      <option value="{{rating.review_rating}}" selected >{{rating.review_rating}}</option>
+                      {% else %}
+                       <option value="{{rating.review_rating}}">{{rating.review_rating}}</option>
+                    {% endif %}
+                  {% endfor %}  
     </select>
   </div>
    <div class="form-group">
     <label for="exampleFormControlInput1">Review date</label>
     <input type="text" class="form-control" id="datepicker" name="review_date">
   </div>
-  <div> <button class="btn btn-dark" type="submit">Add Review</button>
+  <div> <button class="btn btn-dark" type="submit">Edit Review</button>
   </div>
 </form>
 
