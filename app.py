@@ -39,6 +39,13 @@ def insertreview():
     reviews.insert_one(request.form.to_dict())
     return redirect(url_for('reviews'))
 
+@app.route('/editreview/<review_id>')
+def editreview(review_id):
+    the_review =  mongo.db.reviews.find_one({"_id": ObjectId(review_id)})
+    all_categories =  mongo.db.categories.find()
+    return render_template('editreview.html', review=the_review,
+                           categories=all_categories)    
+
 @app.route("/search")
 def search():
     return render_template('search.html', title='Search')

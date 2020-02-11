@@ -6,9 +6,15 @@
         <div class="card">
             <div class="card-header" id="heading{{review._id}}">
             <h2 class="mb-0">
+            <div col-9>
                 <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#{{review._id}}" aria-expanded="false" aria-controls="{{review._id}}">
                 {{review.username}} -  {{review.review_date}}
                 </button>
+            </div>
+            <div col-3>
+                  <a href="{{url_for('editreview', review_id=review._id)}}" type="button" class="btn btn-warning btn-sm">Edit</a>
+                  <button type="button" class="btn btn-danger btn-sm">Delete</button>
+            </div>
             </h2>
             </div>
             <div id="{{review._id}}" class="collapse" aria-labelledby="heading{{review._id}}" data-parent="#accordionsection">
