@@ -2,6 +2,7 @@ import os
 from flask import Flask, render_template, redirect, request, url_for
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
+from datetime import datetime
 from os import path
 if path.exists("env.py"):
     import env
@@ -37,7 +38,13 @@ def addreview():
 @app.route('/insertreview', methods=['POST'])
 def insertreview():
     reviews = mongo.db.reviews
-    reviews.insert_one(request.form.to_dict())
+    post = {'username': request.form.get('username'),
+            'movie_name': request.form.get('movie_name'),
+            'category_name': request.form.get('category_name'),
+            'description': request.form.get('description'),
+            'review_rating': request.form.get('review_rating'),
+            'review_date': datetime.now().strftime('%m/%d/%Y, %H:%M:%S')}
+    reviews.insert_one(post)
     return render_template("reviews.html", 
                            reviews=mongo.db.reviews.find())
 
@@ -52,18 +59,24 @@ def editreview(review_id):
 @app.route('/updatereview/<review_id>', methods=["POST"])
 def updatereview(review_id):
     reviews = mongo.db.reviews
-    reviews.update( {'_id': ObjectId(review_id)},
+    reviews.replace_one( {'_id': ObjectId(review_id)},
     {
         'username': request.form.get('username'),
         'movie_name': request.form.get('movie_name'),
         'category_name': request.form.get('category_name'),
         'description': request.form.get('description'),
         'review_rating': request.form.get('review_rating'),
-        'review_date': request.form.get('review_date')
+        'review_date': datetime.now().strftime('%m/%d/%Y, %H:%M:%S')
     })
     return render_template("reviews.html", 
                            reviews=mongo.db.reviews.find())
-                           
+
+@app.route('/deletereview/<review_id>')
+def deletereview(review_id):
+    mongo.db.reviews.remove({'_id': ObjectId(review_id)})
+    return render_template("reviews.html", 
+                           reviews=mongo.db.reviews.find())
+
 @app.route("/search")
 def search():
     return render_template('search.html', title='Search')
