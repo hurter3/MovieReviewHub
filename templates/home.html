@@ -1,14 +1,13 @@
 {% extends 'base.html' %}
 {% block content %}
     
-    <h1>Main Content</h1>
     <div id="main-content">
-        {% for review in reviews %}    
+        {% for movie in movies %}    
         <div class="media-item">
-            <img class="media-poster card-header" src="https://image.tmdb.org/t/p/w500/kqjL17yufvn9OVLyXYpvtyrFfak.jpg" alt="1917">
+            <img class="media-poster card-header" src="{{movie.url}}" alt="1917">
         </div>
         <div>
-            <span class="title"> 1917 </span>
+            <a href="{{ url_for('reviews', movie_id=movie['_id'] ) }}"><h4>{{ movie.movie_title}}</h4></a>
             <span class="rating"> 10 </span>
         </div>
         <div>
