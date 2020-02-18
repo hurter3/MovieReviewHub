@@ -7,7 +7,8 @@
             <img class="media-poster card-header" src="{{movie.url}}" alt="1917">
         </div>
         <div>
-            <a href="{{ url_for('reviews', movie_id=movie['_id'] ) }}"><h4>{{ movie.movie_title}}</h4></a>
+            <a href="{{ url_for('reviews', movie_id=movie._id ) }}"><h4>{{ movie.movie_title}}</h4></a>
+           <span> {{ movie._id  }} </span>
             <span class="rating"> 10 </span>
         </div>
         <div>
