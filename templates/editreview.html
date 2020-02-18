@@ -1,6 +1,6 @@
 {% extends 'base.html' %} {% block content %}
 <h3>Edit Review</h3>
- <form action="{{ url_for('updatereview', review_id=review._id) }}" method="POST">
+ <form action="{{ url_for('updatereview', review_id=review._id,movie_id=movie_id) }}" method="POST">
   <div class="form-group">
     <label for="exampleFormControlInput1">Username</label>
     <input type="text" class="form-control" id="username" name="username" value="{{review.username}}">

@@ -28,39 +28,41 @@ def about():
 
 @app.route('/reviews/<movie_id>', methods=["GET"])
 def reviews(movie_id):
-    return render_template("reviews.html", 
+    return render_template("reviews.html", movie_id=movie_id,
                            reviews=mongo.db.reviews.find( { 'movie_id': movie_id }))
 
-@app.route("/addreview")
-def addreview():
-    return render_template('addreview.html',
-                           categories=mongo.db.categories.find(),
-                           ratings=mongo.db.ratings.find())
+@app.route("/addreview/<movie_id>")
+def addreview(movie_id):
+    return render_template('addreview.html', 
+                            movie_id=movie_id,
+                            categories=mongo.db.categories.find(),
+                            ratings=mongo.db.ratings.find())
 
-@app.route('/insertreview', methods=['POST'])
-def insertreview():
+@app.route('/insertreview/<movie_id>', methods=["POST"])
+def insertreview(movie_id):
     reviews = mongo.db.reviews
     post = {'username': request.form.get('username'),
             'movie_name': request.form.get('movie_name'),
             'category_name': request.form.get('category_name'),
             'description': request.form.get('description'),
             'review_rating': request.form.get('review_rating'),
-            'review_date': datetime.now().strftime('%m/%d/%Y, %H:%M:%S')}
+            'review_date': datetime.now().strftime('%m/%d/%Y, %H:%M:%S'),
+            'movie_id':  movie_id}
     reviews.insert_one(post)
-    return render_template("reviews.html", 
-                           reviews=mongo.db.reviews.find())
+    return render_template("reviews.html", movie_id=movie_id,
+                           reviews=mongo.db.reviews.find( { 'movie_id': movie_id }))
     # return redirect(url_for("reviews"), reviews=mongo.db.reviews.find())
 
-@app.route('/editreview/<review_id>')
-def editreview(review_id):
+@app.route('/editreview/<review_id>/<movie_id>')
+def editreview(review_id,movie_id):
     the_review =  mongo.db.reviews.find_one({"_id": ObjectId(review_id)})
     all_categories =  mongo.db.categories.find()
-    return render_template('editreview.html', review=the_review,
+    return render_template('editreview.html', review=the_review, movie_id=movie_id,
                            categories=all_categories,
                            ratings=mongo.db.ratings.find())
 
-@app.route('/updatereview/<review_id>', methods=["POST"])
-def updatereview(review_id):
+@app.route('/updatereview/<review_id>/<movie_id>', methods=["POST"])
+def updatereview(review_id,movie_id):
     reviews = mongo.db.reviews
     reviews.replace_one( {'_id': ObjectId(review_id)},
     {
@@ -69,16 +71,16 @@ def updatereview(review_id):
         'category_name': request.form.get('category_name'),
         'description': request.form.get('description'),
         'review_rating': request.form.get('review_rating'),
-        'review_date': datetime.now().strftime('%m/%d/%Y, %H:%M:%S')
-    })
-    return render_template("reviews.html", 
-                           reviews=mongo.db.reviews.find())
+        'review_date': datetime.now().strftime('%m/%d/%Y, %H:%M:%S'),
+        'movie_id':  movie_id})
+    return render_template("reviews.html", movie_id=movie_id,
+                           reviews=mongo.db.reviews.find( { 'movie_id': movie_id }))
 
-@app.route('/deletereview/<review_id>')
-def deletereview(review_id):
+@app.route('/deletereview/<review_id>/<movie_id>')
+def deletereview(review_id,movie_id):
     mongo.db.reviews.remove({'_id': ObjectId(review_id)})
-    return render_template("reviews.html", 
-                           reviews=mongo.db.reviews.find())
+    return render_template("reviews.html", movie_id=movie_id,
+                           reviews=mongo.db.reviews.find( { 'movie_id': movie_id }))
 
 @app.route("/search")
 def search():
