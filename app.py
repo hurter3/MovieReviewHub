@@ -28,13 +28,14 @@ def about():
 
 @app.route('/reviews/<movie_id>', methods=["GET"])
 def reviews(movie_id):
-    return render_template("reviews.html", movie_id=movie_id,
+    return render_template("reviews.html", 
+                           movie_id=movie_id, 
                            reviews=mongo.db.reviews.find( { 'movie_id': movie_id }))
 
 @app.route("/addreview/<movie_id>")
 def addreview(movie_id):
     return render_template('addreview.html', 
-                            movie_id=movie_id,
+                            movie_id=movie_id, 
                             categories=mongo.db.categories.find(),
                             ratings=mongo.db.ratings.find())
 

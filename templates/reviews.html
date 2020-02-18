@@ -2,6 +2,7 @@
 {% block content %}
 
     <div>
+        <h3 {{movie_title}}> 
         <a href="{{url_for('addreview',movie_id=movie_id)}}" type="button" class="btn btn-success btn-sm">Add Review</a>
     </div>             
     <div class="accordion" id="accordionsection">
