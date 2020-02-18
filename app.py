@@ -26,10 +26,10 @@ def home():
 def about():
     return render_template('about.html', title='About')
 
-@app.route('/reviews')
-def reviews():
+@app.route('/reviews/<movie_id>', methods=["GET"])
+def reviews(movie_id):
     return render_template("reviews.html", 
-                           reviews=mongo.db.reviews.find())
+                           reviews=mongo.db.reviews.find( { 'movie_id': movie_id }))
 
 @app.route("/addreview")
 def addreview():
@@ -49,6 +49,7 @@ def insertreview():
     reviews.insert_one(post)
     return render_template("reviews.html", 
                            reviews=mongo.db.reviews.find())
+    # return redirect(url_for("reviews"), reviews=mongo.db.reviews.find())
 
 @app.route('/editreview/<review_id>')
 def editreview(review_id):
