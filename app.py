@@ -35,7 +35,7 @@ def reviews(movie_id):
 @app.route("/addreview/<movie_id>")
 def addreview(movie_id):
     return render_template('addreview.html', 
-                            movie_id=movie_id, 
+                            movie_id=movie_id,
                             categories=mongo.db.categories.find(),
                             ratings=mongo.db.ratings.find())
 
@@ -83,7 +83,7 @@ def deletereview(review_id,movie_id):
     return render_template("reviews.html", movie_id=movie_id,
                            reviews=mongo.db.reviews.find( { 'movie_id': movie_id }))
 
-@app.route("/search")
+@app.route("/search", methods=["GET"])
 def search():
     return render_template('search.html', title='Search')
 

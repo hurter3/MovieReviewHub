@@ -1,15 +1,14 @@
 {% extends 'base.html' %} {% block content %}
 <h3>Search Movie</h3>
-<form action="{{ url_for('home') }}" method="GET">
+<form>
   
    <div class="form-group" id="movieForm">
     <label for="exampleFormControlInput1">Movie Title</label>
     <input type="text" class="form-control" id="movie_name" name="movie_name">
-  </div>
+    </div>
   
   <div> <button onclick="searchMovie" class="btn btn-dark">Search Movie</button>
   </div>
 </form>
-<div id=data> </div>
-
+<div id="data"> List</div>
 {% endblock %}
