@@ -3,7 +3,7 @@ function searchMovie() {
     let query = document.getElementById("movieForm").movie_name;
     
 
-    xhr.open("GET", "//api.themoviedb.org/3/search/movie?api_key=" + apiKey + "&language=en-US&query=" + query + "&page=1&include_adult=false");
+    xhr.open("GET", "//api.themoviedb.org/3/search/movie?api_key=" + config[0] + "&language=en-US&query=" + query + "&page=1&include_adult=false");
     xhr.send();
     
     xhr.onreadystatechange = function() {
@@ -11,7 +11,9 @@ function searchMovie() {
             console.log(this.responseText);
         }
         else {
-            console.log("no data");            
+            console.log("no data");  
+            console.log(this.readyState);
+            console.log(this.status);          
         }
     };
 }
