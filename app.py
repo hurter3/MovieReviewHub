@@ -11,7 +11,6 @@ app = Flask(__name__)
 
 app.config["MONGO_DBNAME"] = os.environ.get('MONGO_DBNAME') 
 app.config["MONGO_URI"] = os.environ.get('MONGO_URI')
-app.config["API_KEY"] = os.environ.get('API_KEY') 
 
 mongo = PyMongo(app)
 
