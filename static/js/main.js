@@ -1,18 +1,24 @@
 function searchMovie() {  
     let xhr = new XMLHttpRequest();  
-    let query = document.getElementById("movieForm").movie_name;
-    
-    console.log(config.apiKey);
+    let query = document.getElementById("movie_name").value;
 
-    
-    
+    console.log("apiKey");
+    console.log(config.apiKey);
+    debugger;
+    console.log("query");
+    console.log(query);
+    debugger;
+        
    
     xhr.onreadystatechange = function() {
-        document.getElementById("data").innerHTML = this.responseText;
-        debugger;
+         
         if (this.readyState == 4 && this.status == 200) {
-            displayText(this.responseText);
+            console.log("readyState == 4 && this.status == 200");
+            debugger;
             console.log(this.responseText);
+            debugger;
+            displayText(this.responseText);
+            debugger;
         }
         else {
             console.log("no data");
