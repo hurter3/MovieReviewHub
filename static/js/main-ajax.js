@@ -1,21 +1,20 @@
+// onclick="search(); return false;" add this to search.html
+
 function searchMovie() {
     let film = document.getElementById("movie_name").value;
     let key = config.apiKey;
-    let url = "https://api.themoviedb.org/3/search/movie?api_key=" + key + "&language=en-US&query=" + film + "&page=1&include_adult=false";
     // alert(film + key);
-
-    fetch(url, {
-	method: 'get'
-    }).then(displayText(response) {
-	
-    }).catch(function(err) {
-	// Error :(
-    });
-
-    
-
-    function displayText(data) {
+    $.ajax({    
+        type: 'GET',
+        url : "https://api.themoviedb.org/3/search/movie?api_key=" + key + "&language=en-US&query=" + film + "&page=1&include_adult=false",
+        async: false,
+        data: {
+            format: 'json'
+        },
+        success: function displayText(data) {
     data = JSON.parse(data);
+    console.log(data);
+    debugger;
     let list = "";
     
     for (let i in data.results) {
@@ -29,6 +28,6 @@ function searchMovie() {
         alert(this.textContent);
     });
     debugger;
+}     
+    });
 }
-debugger;
-
