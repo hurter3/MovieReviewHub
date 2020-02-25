@@ -16,7 +16,7 @@ function searchMovie() {
     let list = "";
     
     for (let i in data.results) {
-        list += "<li>" + data.results[i].title + "</li>";
+        list += "<li><a href='" + data.results[i].title + "'>" + data.results[i].title + "</a></li>";
     }
     
     document.getElementById("data").innerHTML = "<ul>" + list + "</ul>";
