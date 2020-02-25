@@ -12,12 +12,18 @@ function searchMovie() {
             format: 'json'
         },
         success: function(data) {
-    // var jsondata = JSON.parse(data);
+    console.log(data);
     let list = "";
     
     for (let i in data.results) {
-        list += "<li><a href='" + data.results[i].title + "'>" + data.results[i].title + "</a></li>";
-    }
+        let poster = "https://image.tmdb.org/t/p/w200" + data.results[i].backdrop_path; 
+        let img= "<img class='media-poster card-header' src=" + poster + " alt='image'></img>";
+    
+      list += "<li>" + img + "<a href='" + data.results[i].title + "'>" + data.results[i].title + "</a></li>" +
+      "<span>" + data.results[i].overview + "</span>";
+
+//    <img class="media-poster card-header" src="{{movie.url}}" alt="1917"></img>       
+}
     
     document.getElementById("data").innerHTML = "<ul>" + list + "</ul>";
 
