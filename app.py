@@ -82,6 +82,23 @@ def deletereview(review_id,movie_id):
     return render_template("reviews.html", movie_id=movie_id,
                            reviews=mongo.db.reviews.find( { 'movie_id': movie_id }))
 
+@app.route('/insertmovie/<movie_id>', methods=["POST"])
+def insertmovie(movie_id):
+    movies = mongo.db.movies
+    post = {'username': request.form.get('username'),
+            'movie_name': request.form.get('movie_name'),
+            'category_name': request.form.get('category_name'),
+            'description': request.form.get('description'),
+            'review_rating': request.form.get('review_rating'),
+            'review_date': datetime.now().strftime('%m/%d/%Y, %H:%M:%S'),
+            'movie_id':  movie_id}
+    movies.insert_one(post)
+    return render_template('home.html', 
+                           movies=mongo.db.movies.find())
+
+
+
+
 @app.route("/search", methods=["GET"])
 def search():
     return render_template('search.html', title='Search')
