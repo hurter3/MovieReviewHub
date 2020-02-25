@@ -12,9 +12,7 @@ function searchMovie() {
             format: 'json'
         },
         success: function(data) {
-    data = JSON.parse(data);
-    console.log(data);
-    debugger;
+    // var jsondata = JSON.parse(data);
     let list = "";
     
     for (let i in data.results) {
@@ -22,12 +20,10 @@ function searchMovie() {
     }
     
     document.getElementById("data").innerHTML = "<ul>" + list + "</ul>";
-    debugger;
 
     $("li").click(function() {
         alert(this.textContent);
     });
-    debugger;
     }     
     });
 }
