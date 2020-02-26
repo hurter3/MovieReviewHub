@@ -13,13 +13,15 @@ function searchMovie() {
         success: function(data) {
     console.log(data);
     let list = "";
-    let select_movie_btn =  "<button onclick='selectMovie()' class='btn btn-success'>Select Movie</button>";
-
+    
     for (let i in data.results) {
         if (data.results[i].poster_path === null) {
         } else {
-    
-        let movie_title = "<div><h4>" + data.results[i].title + "</h4></div>";
+
+        let title=data.results[i].title;    
+        let select_movie_btn =  "<button onclick='selectMovie(" + title + ")'class='btn btn-success'>Select Movie</button>";
+
+        let movie_title = "<div><h4 id='movie_title'>" + data.results[i].title + "</h4></div>";
         let poster = "https://image.tmdb.org/t/p/w200" + data.results[i].poster_path; 
         let img= "<div><img class='media-poster card-header' src=" + poster + " alt='image'></img>"+ select_movie_btn + "</div>";
         //let urlfor = '<a href=\"{{ url_for(\"insertmovie\",title=' + movie_title + ') }}\"';
@@ -37,4 +39,9 @@ function searchMovie() {
     });
     }     
     });
+}
+
+function selectMovie(title) {
+    console.log("select movie has been invoked");
+    console.log(document.getElementById("movie_title").innerHTML);
 }
