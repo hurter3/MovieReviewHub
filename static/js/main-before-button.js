@@ -13,18 +13,17 @@ function searchMovie() {
         success: function(data) {
     console.log(data);
     let list = "";
-    let select_movie_btn =  "<button onclick='selectMovie()' class='btn btn-success'>Select Movie</button>";
-
+    
     for (let i in data.results) {
         if (data.results[i].poster_path === null) {
         } else {
-    
-        let movie_title = "<div><h4>" + data.results[i].title + "</h4></div>";
         let poster = "https://image.tmdb.org/t/p/w200" + data.results[i].poster_path; 
-        let img= "<div><img class='media-poster card-header' src=" + poster + " alt='image'></img>"+ select_movie_btn + "</div>";
-        //let urlfor = '<a href=\"{{ url_for(\"insertmovie\",title=' + movie_title + ') }}\"';
-        
-        list += '<li>' + movie_title + img  + '<span>' + data.results[i].overview + '</span>';
+        let img= "<img class='media-poster card-header' src=" + poster + " alt='image'></img>";
+        let movie_title = data.results[i].title;
+        let urlfor = '<a href=\"{{ url_for(\"insertmovie\",title=' + movie_title + ') }}\"';
+
+        list += '<li>' + img + urlfor + '>' + movie_title + '</a></li>' +
+        '<span>' + data.results[i].overview + '</span>';
         }
 //    <img class="media-poster card-header" src="{{movie.url}}" alt="1917"></img> 
 //  <a href="{{ url_for('reviews', movie_id=movie._id) }}"      
