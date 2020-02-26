@@ -21,6 +21,8 @@ function searchMovie() {
         let img= "<img class='media-poster card-header' src=" + poster + " alt='image'></img>";
         let movie_title = data.results[i].title;
         let urlfor = '<a href=\"{{ url_for(\"insertmovie\",title=' + movie_title + ') }}\"';
+        //Alternate - can try this: 
+        let urlfor = `<a href="{{ url_for('insertmovie', title= ${movie_title} )}}">`;
 
         list += '<li>' + img + urlfor + '>' + movie_title + '</a></li>' +
         '<span>' + data.results[i].overview + '</span>';
