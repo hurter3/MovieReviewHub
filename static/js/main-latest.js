@@ -29,7 +29,7 @@ function searchMovie() {
         list += '<li>' + movie_title + img  + '<span>' + data.results[i].overview + '</span>';
         }
 //    <img class="media-poster card-header" src="{{movie.url}}" alt="1917"></img> 
-//  <a href="{{ url_for('reviews', movie_id=movie._id) }}"      
+//  <a href="{{ url_for('reviews', movie_id=movie._id) }}"""      
 }
     
     document.getElementById("data").innerHTML = "<ul>" + list + "</ul>";

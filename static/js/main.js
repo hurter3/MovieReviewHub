@@ -19,12 +19,12 @@ function searchMovie() {
         } else {
         let poster = "https://image.tmdb.org/t/p/w200" + data.results[i].poster_path; 
         let img= "<img class='media-poster card-header' src=" + poster + " alt='image'></img>";
-        let movie_title = data.results[i].title;
+        let movie_title = "'" + data.results[i].title + "'";
         let urlfor = `<a href="{{ url_for('insertmovie', title= ${movie_title} )}}">`;
         //let urlfor = `<a href=\"{{ url_for(\"insertmovie\",title=`+ movie_title + `) }}\"`;
         //let urlfor = '<a href=\"{{ url_for(\"insertmovie\",title=' + movie_title + ') }}\"';
 
-        list += '<li>' + img + urlfor + movie_title + '</a></li>' +
+        list += '<li>' + img + urlfor + data.results[i].title + '</a></li>' +
         '<span>' + data.results[i].overview + '</span>';
         }
 //    <img class="media-poster card-header" src="{{movie.url}}" alt="1917"></img> 
