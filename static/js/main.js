@@ -18,10 +18,11 @@ function searchMovie() {
         } else {
         let movie_header = "<div><h4 id='movie_title'>" + data.results[i].title + "</h4></div>";
         let poster = "https://image.tmdb.org/t/p/w200" + data.results[i].poster_path;
+        let tmdb_id = data.results[i].id;
         let movie_overview = data.results[i].overview;
         let movie_title = "'" + data.results[i].title + "'";
        // let sel_movie_btn = `<a href="{{url_for('insertmovie',movie_title=${movie_title})}}"type="button" class="btn btn-success btn-sm">Reviews</a>`;
-        let sel_movie_btn = `<button onclick="selectMovie(\'${poster}\')" class="btn btn-success">Select movie to review</button>`;
+        let sel_movie_btn = `<button onclick="selectMovie(\'${tmdb_id}\',\'${poster}\')" class="btn btn-success">Select movie to review</button>`;
         let img= "<div><img class='media-poster card-header' src=" + poster + " alt='image'></img>"+ sel_movie_btn + "</div>";
         list += '<li>' + movie_header + img + '</a></li>' + '<span id="movie_overview">' + movie_overview + '</span>';
         }
@@ -31,10 +32,8 @@ function searchMovie() {
     });
 }
 
-
-function selectMovie(poster) {
-    console.log("selectMovie has been invoked");
-    console.log(document.getElementById("movie_title").innerHTML);
+function selectMovie(tmdb_id,poster) {
+    document.getElementById('form_tmdb_id').value = tmdb_id; 
     document.getElementById('form_movie_title').value = document.getElementById("movie_title").innerHTML; 
     document.getElementById('form_poster_url').value = poster; 
     document.getElementById('form_movie_overview').value = document.getElementById("movie_overview").innerHTML; 
