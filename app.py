@@ -85,7 +85,7 @@ def deletereview(review_id,movie_id):
 @app.route('/insertmovie', methods=["POST"])
 def insertmovie():
     movies = mongo.db.movies
-    post = {'movie_title': movie_title   
+    post = {'movie_title': request.form.get('form_movie_title')   
             }
     movies.insert_one(post)
     return render_template('home.html', 

@@ -10,7 +10,7 @@
   <div> <button onclick="searchMovie(); return false;" class="btn btn-dark">Search Movie</button>
   </div>
 </form>
-<form id="insertmovie" action="{{ url_for('insertmovie')}}" method="POST">
+<form id="formInsertMovie" action="{{ url_for('insertmovie')}}" method="POST">
   <div class="form-group">
     <input type="text" id="tmdb_id" name="tmdb_id" hidden>
   </div>

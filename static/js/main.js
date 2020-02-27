@@ -42,5 +42,6 @@ function searchMovie() {
 function selectMovie() {
     console.log("selectMovie has been invoked");
     console.log(document.getElementById("movie_title").innerHTML);
-    document.getElementById('form_movie_title').value = "My Text Input";
+    document.getElementById('form_movie_title').value = document.getElementById("movie_title").innerHTML; 
+    document.getElementById('formInsertMovie').submit();
 }
