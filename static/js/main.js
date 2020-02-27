@@ -17,11 +17,12 @@ function searchMovie() {
     for (let i in data.results) {
         if (data.results[i].poster_path === null) {
         } else {
-        let movie_header = "<div><h4>" + data.results[i].title + "</h4></div>";
+        let movie_header = "<div><h4 id='movie_title'>" + data.results[i].title + "</h4></div>";
         let poster = "https://image.tmdb.org/t/p/w200" + data.results[i].poster_path;
         let movie_overview = data.results[i].overview;
         let movie_title = "'" + data.results[i].title + "'";
-        let sel_movie_btn = `<a href="{{ url_for('insertmovie', title= ${movie_title} )}}"type="button" class="btn btn-success btn-sm">Reviews</a>`;
+       // let sel_movie_btn = `<a href="{{url_for('insertmovie',movie_title=${movie_title})}}"type="button" class="btn btn-success btn-sm">Reviews</a>`;
+        let sel_movie_btn = `<button onclick="selectMovie()" class="btn btn-success">Select movie to review</button>`;
         let img= "<div><img class='media-poster card-header' src=" + poster + " alt='image'></img>"+ sel_movie_btn + "</div>";
         list += '<li>' + movie_header + img + '</a></li>' + '<span>' + movie_overview + '</span>';
         }
@@ -35,4 +36,11 @@ function searchMovie() {
     });
     }     
     });
+}
+
+
+function selectMovie() {
+    console.log("selectMovie has been invoked");
+    console.log(document.getElementById("movie_title").innerHTML);
+    document.getElementById('form_movie_title').value = "My Text Input";
 }
