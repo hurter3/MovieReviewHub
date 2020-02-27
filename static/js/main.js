@@ -2,7 +2,6 @@
 function searchMovie() {
     let film = document.getElementById("movie_name").value;
     let key = config.apiKey;
-    // alert(film + key);
     $.ajax({    
         type: 'GET',
         url : "https://api.themoviedb.org/3/search/movie?api_key=" + key + "&language=en-US&query=" + film + "&page=1&include_adult=false",
@@ -22,26 +21,22 @@ function searchMovie() {
         let movie_overview = data.results[i].overview;
         let movie_title = "'" + data.results[i].title + "'";
        // let sel_movie_btn = `<a href="{{url_for('insertmovie',movie_title=${movie_title})}}"type="button" class="btn btn-success btn-sm">Reviews</a>`;
-        let sel_movie_btn = `<button onclick="selectMovie()" class="btn btn-success">Select movie to review</button>`;
+        let sel_movie_btn = `<button onclick="selectMovie(\'${poster}\')" class="btn btn-success">Select movie to review</button>`;
         let img= "<div><img class='media-poster card-header' src=" + poster + " alt='image'></img>"+ sel_movie_btn + "</div>";
-        list += '<li>' + movie_header + img + '</a></li>' + '<span>' + movie_overview + '</span>';
+        list += '<li>' + movie_header + img + '</a></li>' + '<span id="movie_overview">' + movie_overview + '</span>';
         }
 }
-
-
     document.getElementById("data").innerHTML = "<ul>" + list + "</ul>";
-
-    $("li").click(function() {
-        alert(this.textContent);
-    });
     }     
     });
 }
 
 
-function selectMovie() {
+function selectMovie(poster) {
     console.log("selectMovie has been invoked");
     console.log(document.getElementById("movie_title").innerHTML);
     document.getElementById('form_movie_title').value = document.getElementById("movie_title").innerHTML; 
+    document.getElementById('form_poster_url').value = poster; 
+    document.getElementById('form_movie_overview').value = document.getElementById("movie_overview").innerHTML; 
     document.getElementById('formInsertMovie').submit();
 }

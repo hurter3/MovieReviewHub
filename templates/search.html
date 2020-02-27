@@ -11,12 +11,11 @@
   </div>
 </form>
 <form id="formInsertMovie" action="{{ url_for('insertmovie')}}" method="POST">
-  <div class="form-group">
-    <input type="text" id="tmdb_id" name="tmdb_id" hidden>
-  </div>
-   <div class="form-group">
-    <input type="text" id="form_movie_title" name="form_movie_title" value="this will be auto filled">
-  </div>
+      <input type="text" id="tmdb_id" name="tmdb_id" hidden>
+      <input type="text" id="form_movie_title" name="form_movie_title" value="this title be auto filled">
+      <input type="text" id="form_poster_url" name="form_poster_url" value="this url be auto filled">
+      <input type="text" id="form_movie_overview" name="form_movie_overview" hidden>
+ 
 </form>
 <div id="data"> Search and Select a movie to write a review</div>
 
