@@ -4,26 +4,28 @@
     <div id="main-content">
         {% for movie in movies %}    
         <div class="media-item">
+            <div class = "info">
+                <div class="wrapper">
+                    <div>
+                        <span><h4>{{ movie.movie_title}}</h4><span>
+                    </div>
+                    <div>
+                        <div class="rating bg-steel">
+                            <span> reviews: 5</span>
+                        </div>
+                        <div class="release_date" title="release_date">
+                            <span> 01-03-2019</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class = "image-content">
                 <a href="{{ url_for('reviews', tmdb_id=movie.tmdb_id) }}">
                     <img class="media-poster card-header" src="{{movie.url}}" alt="{{movie.movie_title}}">
                 </a>
             </div>
-            <div class = "info">
-                <div class="wrapper">
-                    <div class="rating">
-                        <div class="icon">
-                            <span> icon</span>
-                        </div>
-                    </div>
-                    <div>
-                        <span><h4>{{ movie.movie_title}}</h4><span>
-                    </div>
-                </div>
-                <div> 
-                    <span>{{movie.overview}}</span>
-                </div> 
-            </div>
+            <div class="overview" title="{{movie.overview}}">More
+            </div> 
         </div>
                     
         {% endfor %}
