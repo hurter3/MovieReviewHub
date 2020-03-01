@@ -4,17 +4,28 @@
     <div id="main-content">
         {% for movie in movies %}    
         <div class="media-item">
-            <img class="media-poster card-header" src="{{movie.url}}" alt="{{movie.movie_title}}">
+            <div class = "image-content">
+                <a href="{{ url_for('reviews', tmdb_id=movie.tmdb_id) }}">
+                    <img class="media-poster card-header" src="{{movie.url}}" alt="{{movie.movie_title}}">
+                </a>
+            </div>
+            <div class = "info">
+                <div class="wrapper">
+                    <div class="rating">
+                        <div class="icon">
+                            <span> icon</span>
+                        </div>
+                    </div>
+                    <div>
+                        <span><h4>{{ movie.movie_title}}</h4><span>
+                    </div>
+                </div>
+                <div> 
+                    <span>{{movie.overview}}</span>
+                </div> 
+            </div>
         </div>
-        <div>
-            <a href="{{ url_for('reviews', tmdb_id=movie.tmdb_id) }}"><h4>{{ movie.movie_title}}</h4></a>
-            <span>{{movie.overview}}</span>
-        </div>
-        <div>
-            <p class = "genres"> </p>
-        </div>
-    
-            
+                    
         {% endfor %}
     </div>
 {% endblock %}
