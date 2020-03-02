@@ -18,7 +18,7 @@ mongo = PyMongo(app)
 @app.route("/home")
 def home():
     return render_template('home.html', 
-                           movies=mongo.db.movies.find())
+                           movies=mongo.db.movies.find().sort("last_updated", -1))
 
 
 @app.route("/about")
@@ -42,14 +42,25 @@ def addreview(tmdb_id):
 def insertreview():
     reviews = mongo.db.reviews
     tmdb_id = request.form.get('tmdb_id')
+    review_date = datetime.now().strftime('%d/%m/%Y, %H:%M:%S')
     post = {'username': request.form.get('username'),
             'movie_name': request.form.get('movie_name'),
             'category_name': request.form.get('category_name'),
             'description': request.form.get('description'),
             'review_rating': request.form.get('review_rating'),
-            'review_date': datetime.now().strftime('%m/%d/%Y, %H:%M:%S'),
+            'review_date': review_date,
             'tmdb_id':  request.form.get('tmdb_id')}
     reviews.insert_one(post)
+
+    mongo.db.movies.update_one (
+        {'tmdb_id': tmdb_id},
+        {'$inc': {'review_count': 1}}
+    )
+    mongo.db.movies.update_one (
+        {'tmdb_id': tmdb_id},
+        {'$set': {'last_updated': review_date}}
+    )
+
     return render_template("reviews.html", tmdb_id=tmdb_id,
                            reviews=mongo.db.reviews.find( { 'tmdb_id': tmdb_id }))
     # return redirect(url_for("reviews"), reviews=mongo.db.reviews.find())
@@ -72,7 +83,7 @@ def updatereview(review_id,tmdb_id):
         'category_name': request.form.get('category_name'),
         'description': request.form.get('description'),
         'review_rating': request.form.get('review_rating'),
-        'review_date': datetime.now().strftime('%m/%d/%Y, %H:%M:%S'),
+        'review_date': datetime.now().strftime('%d/%m/%Y, %H:%M:%S'),
         'tmdb_id':  tmdb_id})
     return render_template("reviews.html", tmdb_id=tmdb_id,
                            reviews=mongo.db.reviews.find( { 'tmdb_id': tmdb_id }))
@@ -80,6 +91,12 @@ def updatereview(review_id,tmdb_id):
 @app.route('/deletereview/<review_id>/<tmdb_id>')
 def deletereview(review_id,tmdb_id):
     mongo.db.reviews.remove({'_id': ObjectId(review_id)})
+
+    mongo.db.movies.find_one_and_update(
+        {'tmdb_id': tmdb_id},
+        {'$inc': {'review_count': -1}}
+    )
+
     return render_template("reviews.html", tmdb_id=tmdb_id,
                            reviews=mongo.db.reviews.find( { 'tmdb_id': tmdb_id }))
 
@@ -96,7 +113,11 @@ def insertmovie():
         post = {'tmdb_id': request.form.get('form_tmdb_id'), 
                 'movie_title': request.form.get('form_movie_title'),
                 'url': request.form.get('form_poster_url'),
-                'overview': request.form.get('form_movie_overview')          
+                'overview': request.form.get('form_movie_overview'),
+                'release_date': request.form.get('form_release_date'),
+                'vote_average': request.form.get('form_vote_average'),
+                'last_updated': datetime.now().strftime('%m/%d/%Y, %H:%M:%S'),
+                'review_count':0
                 }
         movies.insert_one(post)
         return render_template('addreview.html', 

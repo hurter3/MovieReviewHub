@@ -59,4 +59,15 @@ main #main-content .media-item .rating {
     text-align: center;
   }
 
+main #main-content .media-item .vote_average {
+    position: relative;
+    right: auto;
+    float: left;
+    background-color: #f73041;
+    color: #fff;
+    height: 25px;
+    width: 25px;
+    border-radius: 50%;
+    text-align: center;
+  }
 

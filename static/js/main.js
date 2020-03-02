@@ -20,9 +20,10 @@ function searchMovie() {
         let poster = "https://image.tmdb.org/t/p/w200" + data.results[i].poster_path;
         let tmdb_id = data.results[i].id;
         let movie_overview = data.results[i].overview;
-        let movie_title = "'" + data.results[i].title + "'";
-       // let sel_movie_btn = `<a href="{{url_for('insertmovie',movie_title=${movie_title})}}"type="button" class="btn btn-success btn-sm">Reviews</a>`;
-        let sel_movie_btn = `<button onclick="selectMovie(\'${tmdb_id}\',\'${poster}\')" class="btn btn-success">Select movie to review</button>`;
+        let movie_title = data.results[i].title;
+        let release_date = data.results[i].release_date;
+        let vote_average = data.results[i].vote_average;
+        let sel_movie_btn = `<button onclick="selectMovie(\'${tmdb_id}\',\'${movie_title}\',\'${poster}\',\'${release_date}\',\'${vote_average}\',\'${movie_overview}\')" class="btn btn-success">Select movie to review</button>`;
         let img= "<div><img class='media-poster card-header' src=" + poster + " alt='image'></img>"+ sel_movie_btn + "</div>";
         list += '<li>' + movie_header + img + '</a></li>' + '<span id="movie_overview">' + movie_overview + '</span>';
         }
@@ -32,10 +33,13 @@ function searchMovie() {
     });
 }
 
-function selectMovie(tmdb_id,poster) {
+
+function selectMovie(tmdb_id,movie_title,poster,release_date,vote_average,movie_overview) {
     document.getElementById('form_tmdb_id').value = tmdb_id; 
-    document.getElementById('form_movie_title').value = document.getElementById("movie_title").innerHTML; 
+    document.getElementById('form_movie_title').value = movie_title; 
     document.getElementById('form_poster_url').value = poster; 
-    document.getElementById('form_movie_overview').value = document.getElementById("movie_overview").innerHTML; 
+    document.getElementById('form_movie_overview').value = movie_overview; 
+    document.getElementById('form_release_date').value = release_date;  
+    document.getElementById('form_vote_average').value = vote_average; 
     document.getElementById('formInsertMovie').submit();
 }
