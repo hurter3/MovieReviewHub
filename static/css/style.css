@@ -36,7 +36,7 @@ h1, h2, h3, h4, h5, h6 {
 main #main-content .media-item {
     position: relative;
     display: inline-block;
-    width: 180px;
+    width: 200px;
     margin: 2% 1%;
     white-space: nowrap;
     overflow: hidden;
@@ -61,8 +61,8 @@ main #main-content .media-item .rating {
 
 main #main-content .media-item .vote_average {
     position: relative;
-    right: auto;
-    float: left;
+    left: auto;
+    float: right;
     background-color: #f73041;
     color: #fff;
     height: 25px;

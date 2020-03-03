@@ -29,7 +29,7 @@ def about():
 def reviews(tmdb_id):
     return render_template("reviews.html", 
                            tmdb_id=tmdb_id, 
-                           reviews=mongo.db.reviews.find( { 'tmdb_id': tmdb_id }))
+                           reviews=mongo.db.reviews.find( { 'tmdb_id': tmdb_id }).sort("review_date", -1))
 
 @app.route("/addreview/<tmdb_id>")
 def addreview(tmdb_id):
