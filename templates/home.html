@@ -24,7 +24,7 @@
                 </div>
             </div>
             <div class = "image-content">
-                <a href="{{ url_for('reviews', tmdb_id=movie.tmdb_id) }}">
+                <a href="{{ url_for('reviews', tmdb_id=movie.tmdb_id,movie_title= movie.movie_title,movie_url=movie.url) }}">
                     <img class="media-poster card-header" src="{{movie.url}}" alt="{{movie.movie_title}}">
                 </a>
             </div>
