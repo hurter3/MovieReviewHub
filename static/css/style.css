@@ -9,6 +9,10 @@ h1, h2, h3, h4, h5, h6 {
   text-align: center
 }
 
+h4 {
+  color: #444444;
+  text-align: left;
+}
 .bg-steel {
   background-color: #5f788a;
 }
@@ -70,4 +74,17 @@ main #main-content .media-item .vote_average {
     border-radius: 50%;
     text-align: center;
   }
+
+.item-border {
+  border: 3px solid #5f788a;
+  padding: 5px;
+}
+
+.img {
+  float: left;
+  }
+
+.clearfix {
+  overflow: auto;
+}
 

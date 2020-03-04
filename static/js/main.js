@@ -16,7 +16,7 @@ function searchMovie() {
     for (let i in data.results) {
         if (data.results[i].poster_path === null) {
         } else {
-        let movie_header = "<div class='card'><h4 id='movie_title'>" + data.results[i].title + "</h4></div>";
+        let movie_header = "<div><h4 id='movie_title'>" + data.results[i].title + "</h4></div>";
         let poster = "https://image.tmdb.org/t/p/w200" + data.results[i].poster_path;
         let tmdb_id = data.results[i].id;
         let movie_overview = data.results[i].overview;
@@ -25,7 +25,7 @@ function searchMovie() {
         let vote_average = data.results[i].vote_average;
         let sel_movie_btn = `<button onclick="selectMovie(\'${tmdb_id}\',\'${movie_title}\',\'${poster}\',\'${release_date}\',\'${vote_average}\',\'${movie_overview}\')" class="btn btn-success">Select movie to review</button>`;
         let img= "<img class='media-poster card-header' src=" + poster + " alt='image'></img>";
-        list +=  '<div class="row">'+ img + '<div>'+ sel_movie_btn + '<div><p>' + movie_overview + '</p></div></div></div>' ;
+        list += '<div class="row item-border"><div class="col-md-4">'+ img + '</div><div class="col-md-8"><div>' + movie_header + '</div><p>'+ movie_overview + '</p>'+sel_movie_btn+'</div></div></div>' ;
         }
   
 }
