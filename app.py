@@ -109,13 +109,13 @@ def insertmovie():
     movie_in_collection = mongo.db.movies.find_one({"tmdb_id" : tmdb_id})
     if movie_in_collection:
         return render_template("reviews.html", 
-                            tmdb_id=tmdb_id, 
-                            movie_title = movie_title,
-                            reviews=mongo.db.reviews.find( { 'tmdb_id': tmdb_id }))
+                           tmdb_id=tmdb_id, 
+                           movie_title=movie_title,
+                           reviews=mongo.db.reviews.find( { 'tmdb_id': tmdb_id }).sort("review_date", -1))
     else:
         movies = mongo.db.movies
         post = {'tmdb_id': request.form.get('form_tmdb_id'), 
-                'movie_title': movie_title,
+                'movie_title': request.form.get('form_movie_title'),
                 'url': request.form.get('form_poster_url'),
                 'overview': request.form.get('form_movie_overview'),
                 'release_date': request.form.get('form_release_date'),

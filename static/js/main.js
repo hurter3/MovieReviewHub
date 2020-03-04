@@ -35,12 +35,15 @@ function searchMovie() {
 }
 
 
+
 function selectMovie(tmdb_id,movie_title,poster,release_date,vote_average,movie_overview) {
+    console.log('selectmovie');
+    debugger;
     document.getElementById('form_tmdb_id').value = tmdb_id; 
     document.getElementById('form_movie_title').value = movie_title; 
     document.getElementById('form_poster_url').value = poster; 
     document.getElementById('form_movie_overview').value = movie_overview; 
     document.getElementById('form_release_date').value = release_date;  
     document.getElementById('form_vote_average').value = vote_average; 
-    document.getElementById('formInsertMovie').submit();
+   document.getElementById('formInsertMovie').submit();
 }
