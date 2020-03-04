@@ -1,15 +1,14 @@
 {% extends 'base.html' %} {% block content %}
-<h3>Search Movie</h3>
 <form>
-  
-   <div class="form-group" id="movieForm">
-    <label for="exampleFormControlInput1">Movie Title</label>
-    <input type="text" class="form-control" id="movie_name" name="movie_name">
+     <div class="form-group" id="movieForm">
+    <label for="exampleFormControlInput1"></label>
+    <input type="text" class="form-control" id="movie_name" name="movie_name" placeholder="Search for Movie Titles...">
     </div>
-  
-  <div> <button onclick="searchMovie(); return false;" class="btn btn-dark">Search Movie</button>
-  </div>
+    <div>
+     <button onclick="searchMovie(); return false;" class="btn btn-dark">Search Movie</button>
+    </div>
 </form>
+
 <form id="formInsertMovie" action="{{ url_for('insertmovie')}}" method="POST">
       <input type="text" id="form_tmdb_id" name="form_tmdb_id" hidden>
       <input type="text" id="form_movie_title" name="form_movie_title" hidden>

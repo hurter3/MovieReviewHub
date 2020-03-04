@@ -4,15 +4,15 @@
     <div>
         <a href="{{url_for('addreview',tmdb_id=tmdb_id,movie_title=movie_title)}}" type="button" class="btn btn-success btn-sm">Add Review</a>
     </div>             
-    <div class="row">
-    <div class="accordion col-md-8" id="accordionsection">
+    
+    <div class="accordion" id="accordionsection">
         {% for review in reviews %}    
         <div class="card">
             <div class="card-header" id="heading{{review._id}}">
             <h2 class="mb-0">
             <div col-9>
                 <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#{{review._id}}" aria-expanded="false" aria-controls="{{review._id}}">
-                {{review.username}} -  {{review.review_date}}
+          <i class="fas fa-angle-down"></i> - {{review.username}} -  {{review.review_date}}
                 </button>
             </div>
             <div col-3>
@@ -29,16 +29,4 @@
         </div>
         {% endfor %}
     </div>
-         <div class="col-md-4">
-          <div class="content-section">
-            <h3> {{movie_title}}</h3>
-            <p class='text-muted'>
-              <ul class="list-group">
-                <li class="list-group-item list-group-item-light">Leading user: Jack Jones</li>
-                <img class="media-poster card-header" src="https://image.tmdb.org/t/p/w200/s8qRIwA0zDPbnRekeU0rDwWE7q7.jpg" alt="last review">
-                <li class="list-group-item list-group-item-light" >Latest Movie Reviewed</li>
-              </ul>
-            </p>
-          </div>
-        </div> 
-{% endblock %}
+     {% endblock %}

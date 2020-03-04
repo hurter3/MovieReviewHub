@@ -11,6 +11,8 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
     
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   
     {% if title %}
         <title>Movie Review Hub - {{ title }}</title>
@@ -46,10 +48,10 @@
     </header>
     <main role="main" class="container">
       <div class="row">
-        <div class="col">
+        <div class="col-md-8">
           {% block content %}{% endblock %}
         </div>
-   <!--     <div class="col-md-4">
+        <div class="col-md-4">
           <div class="content-section">
             <h3>Hall of fame</h3>
             <p class='text-muted'>
@@ -60,7 +62,7 @@
               </ul>
             </p>
           </div>
-        </div> --> 
+        </div>  
       </div>
     </main>
 

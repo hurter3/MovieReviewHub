@@ -27,10 +27,18 @@ def about():
 
 @app.route('/reviews/<tmdb_id>/<movie_title>', methods=["GET"])
 def reviews(tmdb_id,movie_title):
-    return render_template("reviews.html", 
+    reviews_exist = mongo.db.reviews.find_one({"tmdb_id" : tmdb_id})
+    if reviews_exist:
+        return render_template("reviews.html", 
                            tmdb_id=tmdb_id, 
                            movie_title=movie_title,
                            reviews=mongo.db.reviews.find( { 'tmdb_id': tmdb_id }).sort("review_date", -1))
+    else:
+        return render_template('addreview.html', 
+                            tmdb_id=tmdb_id,
+                            movie_title= movie_title,
+                            categories=mongo.db.categories.find(),
+                            ratings=mongo.db.ratings.find())
 
 @app.route("/addreview/<tmdb_id>/<movie_title>")
 def addreview(tmdb_id,movie_title):
@@ -40,8 +48,8 @@ def addreview(tmdb_id,movie_title):
                             categories=mongo.db.categories.find(),
                             ratings=mongo.db.ratings.find())
 
-@app.route('/insertreview', methods=["POST"])
-def insertreview():
+@app.route("/insertreview/<tmdb_id>/<movie_title>", methods=["POST"])
+def insertreview(tmdb_id,movie_title):
     reviews = mongo.db.reviews
     tmdb_id = request.form.get('tmdb_id')
     review_date = datetime.now().strftime('%d/%m/%Y, %H:%M:%S')
@@ -63,8 +71,10 @@ def insertreview():
         {'$set': {'last_updated': review_date}}
     )
 
-    return render_template("reviews.html", tmdb_id=tmdb_id,
-                           reviews=mongo.db.reviews.find( { 'tmdb_id': tmdb_id }))
+    return render_template("reviews.html", 
+                           tmdb_id=tmdb_id, 
+                           movie_title=movie_title,
+                           reviews=mongo.db.reviews.find( { 'tmdb_id': tmdb_id }).sort("review_date", -1))
     # return redirect(url_for("reviews"), reviews=mongo.db.reviews.find())
 
 @app.route('/editreview/<review_id>/<tmdb_id>')
@@ -106,6 +116,7 @@ def deletereview(review_id,tmdb_id):
 def insertmovie():
     tmdb_id = request.form.get('form_tmdb_id')
     movie_title = request.form.get('form_movie_title')
+    print(movie_title)
     movie_in_collection = mongo.db.movies.find_one({"tmdb_id" : tmdb_id})
     if movie_in_collection:
         return render_template("reviews.html", 
