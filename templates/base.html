@@ -57,14 +57,16 @@
             <p class='text-muted'>
               <ul class="list-group">
                 <li class="list-group-item list-group-item-light">Leading user: Jack Jones</li>
-                <img class="media-poster card-header" src="https://image.tmdb.org/t/p/w200/s8qRIwA0zDPbnRekeU0rDwWE7q7.jpg" alt="last review">
-               <li class="list-group-item list-group-item-light" >Latest Movie Reviewed</li>
+                {% block image %}{% endblock %}
+                <li class="list-group-item list-group-item-light" >Latest Movie Reviewed</li>
               </ul>
             </p>
           </div>
         </div>  
       </div>
     </main>
+
+<!-- <img class="media-poster card-header" src="https://image.tmdb.org/t/p/w200/s8qRIwA0zDPbnRekeU0rDwWE7q7.jpg" alt="last review"> -->
 
 
     <!-- Optional JavaScript -->
