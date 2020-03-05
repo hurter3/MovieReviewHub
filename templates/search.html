@@ -2,10 +2,12 @@
 <form>
      <div class="form-group" id="movieForm">
     <label for="exampleFormControlInput1"></label>
-    <input type="text" class="form-control" id="movie_name" name="movie_name" placeholder="Search for Movie Titles...">
+    <input type="text" class="form-control" id="movie_name" name="movie_name" placeholder="Search and Select a movie to view or write a review">
     </div>
     <div>
-     <button onclick="searchMovie(); return false;" class="btn btn-dark">Search Movie</button>
+     <button onclick="searchMovie('movie'); return false;" class="btn btn-dark">Search Movie</button>
+     <button onclick="searchMovie('person'); return false;" class="btn btn-dark">Search Person</button>
+     <button onclick="searchMovie('collection'); return false;" class="btn btn-dark">Search Collection</button>
     </div>
 </form>
 
@@ -17,7 +19,7 @@
       <input type="text" id="form_release_date" name="form_release_date" hidden>
       <input type="text" id="form_vote_average" name="form_vote_average" hidden>
  </form>
-<div id="data"> Search and Select a movie to write a review</div>
+<div id="data"></div>
 
 
 

@@ -1,10 +1,12 @@
 // onclick="search(); return false;" add this to search.html
-function searchMovie() {
-    let film = document.getElementById("movie_name").value;
+// https://api.themoviedb.org/3/search/person?api_key=51977f79d5e5c6689cf9b9ec7dcc8716&language=en-US&query=roger%20moore&page=1&include_adult=false
+
+function searchMovie(searchBy) {
+    let query = document.getElementById("searchInput").value;
     let key = config.apiKey;
     $.ajax({    
         type: 'GET',
-        url : "https://api.themoviedb.org/3/search/movie?api_key=" + key + "&language=en-US&query=" + film + "&page=1&include_adult=false",
+        url : "https://api.themoviedb.org/3/search/" + seachBy + "?api_key=" + key + "&language=en-US&query=" + query + "&page=1&include_adult=false",
         async: false,
         data: {
             format: 'json'
