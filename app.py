@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, redirect, request, url_for
+from flask import Flask, render_template, redirect, request, url_for, session, flash
 from forms import RegistrationForm, LoginForm
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
@@ -30,8 +30,9 @@ def about():
                             first_movie=mongo.db.movies.find_one(),
                             title='About')
 
-@app.route('/reviews/<tmdb_id>', methods=["GET"])
-def reviews(tmdb_id):
+@app.route('/reviews/')
+def reviews():
+    tmdb_id = request.args.get('tmdb_id')
     reviews_exist = mongo.db.reviews.find_one({"tmdb_id" : tmdb_id})
     if reviews_exist:
         return render_template("reviews.html", 
@@ -80,7 +81,7 @@ def insertreview(tmdb_id):
         tmdb_id=tmdb_id, 
         movie=mongo.db.movies.find_one({"tmdb_id" : tmdb_id}),
         reviews=mongo.db.reviews.find( { 'tmdb_id': tmdb_id }).sort("review_date", -1))
-    # return redirect(url_for("reviews"), reviews=mongo.db.reviews.find())
+    
 
 @app.route('/editreview/<review_id>/<tmdb_id>')
 def editreview(review_id,tmdb_id):
@@ -178,20 +179,34 @@ def register():
         first_movie=mongo.db.movies.find_one(),
         form=form)
 
-
-@app.route("/login", methods=['GET', 'POST'])
+@app.route("/login")
 def login():
-    form = LoginForm()
-    if form.validate_on_submit():
-        if form.email.data == 'admin@mrh.com' and form.password.data == 'password':
-            flash('You have been logged in!', 'success')
-            return redirect(url_for('home',
-            first_movie=mongo.db.movies.find_one()))
+   return render_template('login.html',
+                            first_movie=mongo.db.movies.find_one())
+
+@app.route('/logincheck', methods=['GET', 'POST'])
+def logincheck():
+    username = request.form.get('username')
+    password = request.form.get('password')
+    user_exists = mongo.db.users.find_one({"username" : username})
+    if user_exists:
+        if user_exists['password'] == request.form.get('password'):
+                session['user'] = username
+                flash("Logged successfully in as {username}", 'success')
+                return render_template('home.html', 
+                        first_movie=mongo.db.movies.find_one(), 
+                        movies=mongo.db.movies.find().sort("last_updated", -1))   
         else:
-            flash('Login Unsuccessful. Please check username and password', 'danger')
-    return render_template('login.html',
-            first_movie=mongo.db.movies.find_one(),
-            form=form)
+            flash('Login Unsuccessful. Please check password', 'danger')
+            return render_template('login.html',
+                            first_movie=mongo.db.movies.find_one())        
+    else:
+        flash('Login Unsuccessful. Please check username and password', 'danger')
+        return render_template('login.html',
+                            first_movie=mongo.db.movies.find_one())
+
+                         
+
 
 if __name__ == '__main__':
     app.run(host=os.environ.get('IP'),
