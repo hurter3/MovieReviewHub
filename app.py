@@ -120,21 +120,23 @@ def deletereview(review_id,tmdb_id):
         {'tmdb_id': tmdb_id},
         {'$inc': {'review_count': -1}}
     )
-    flash('Review deleted successfully!', 'success')
     reviews_exist = mongo.db.reviews.find_one({"tmdb_id" : tmdb_id})
     if reviews_exist:
+        flash('Review deleted successfully!', 'success')
         return render_template("reviews.html", 
             tmdb_id=tmdb_id, 
             movie=mongo.db.movies.find_one({"tmdb_id" : tmdb_id}),
             reviews=mongo.db.reviews.find( { 'tmdb_id': tmdb_id }).sort("review_date", -1))
     else:
         flash('The last review was deleted', 'success')
+        mongo.db.movies.remove({'tmdb_id': tmdb_id})
         return render_template('home.html', 
-                           first_movie=mongo.db.movies.find_one(), 
-                           movies=mongo.db.movies.find().sort("last_updated", -1))
+            first_movie=mongo.db.movies.find_one(), 
+            movies=mongo.db.movies.find().sort("last_updated", -1))
+
     
     
-@app.route('/insertmovie', methods=["POST"])
+@app.route('/insertmovie', methods=['GET', 'POST'])
 def insertmovie():
     tmdb_id = request.form.get('form_tmdb_id')
     movie_url = request.form.get('form_poster_url')
@@ -170,7 +172,7 @@ def insertmovie():
                             tmdb_id=tmdb_id,
                             movie=mongo.db.movies.find_one({"tmdb_id" : tmdb_id}),
                             categories=mongo.db.categories.find(),
-                            ratings=mongo.db.ratings.find())
+                            ratings=mongo.db.ratings.find())  
     
 
 @app.route('/cancelreview/<tmdb_id>')

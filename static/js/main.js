@@ -1,6 +1,4 @@
 // onclick="search(); return false;" add this to search.html
-// https://api.themoviedb.org/3/search/person?api_key=51977f79d5e5c6689cf9b9ec7dcc8716&language=en-US&query=roger%20moore&page=1&include_adult=false
-
 
 function searchMovie(searchBy) {
     let query = document.getElementById("searchInput").value;
@@ -71,17 +69,12 @@ if(typeof poster_path === 'undefined') {
 
 
 function selectMovie(tmdb_id,movie_title,poster,release_date,vote_average,movie_overview) {
-    console.log('selectmovie');
-    debugger;
-    console.log(poster);
     document.getElementById('basePoster').src=poster;
-    console.log(document.getElementById('basePoster').src);
-    debugger;
     document.getElementById('form_tmdb_id').value = tmdb_id; 
     document.getElementById('form_movie_title').value = movie_title; 
     document.getElementById('form_poster_url').value = poster; 
     document.getElementById('form_movie_overview').value = movie_overview; 
     document.getElementById('form_release_date').value = release_date;  
     document.getElementById('form_vote_average').value = vote_average; 
-   document.getElementById('formInsertMovie').submit();
+    document.getElementById('formInsertMovie').submit();
 }
