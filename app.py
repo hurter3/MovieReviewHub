@@ -40,6 +40,7 @@ def reviews():
             movie=mongo.db.movies.find_one({"tmdb_id" : tmdb_id}),
             reviews=mongo.db.reviews.find( { 'tmdb_id': tmdb_id }).sort("review_date", -1))
     else:
+        flash('No reviews have been added, be the first.', 'warning')
         return render_template('addreview.html', 
             tmdb_id=tmdb_id,
             movie=mongo.db.movies.find_one({"tmdb_id" : tmdb_id}),
@@ -76,7 +77,7 @@ def insertreview(tmdb_id):
         {'tmdb_id': tmdb_id},
         {'$set': {'last_updated': review_date}}
     )
-
+    flash('Review added successfully!', 'success')
     return render_template("reviews.html", 
         tmdb_id=tmdb_id, 
         movie=mongo.db.movies.find_one({"tmdb_id" : tmdb_id}),
@@ -106,7 +107,9 @@ def updatereview(review_id,tmdb_id):
         'review_rating': request.form.get('review_rating'),
         'review_date': datetime.now().strftime('%d/%m/%Y, %H:%M:%S'),
         'tmdb_id':  tmdb_id})
+    flash('Review updated successfully', 'success')
     return render_template("reviews.html", tmdb_id=tmdb_id,
+                           movie=mongo.db.movies.find_one({"tmdb_id" : tmdb_id}),
                            reviews=mongo.db.reviews.find( { 'tmdb_id': tmdb_id }))
 
 @app.route('/deletereview/<review_id>/<tmdb_id>')
@@ -117,11 +120,20 @@ def deletereview(review_id,tmdb_id):
         {'tmdb_id': tmdb_id},
         {'$inc': {'review_count': -1}}
     )
-
-    return render_template("reviews.html",
-        tmdb_id=tmdb_id,
-        reviews=mongo.db.reviews.find( { 'tmdb_id': tmdb_id }))
-
+    flash('Review deleted successfully!', 'success')
+    reviews_exist = mongo.db.reviews.find_one({"tmdb_id" : tmdb_id})
+    if reviews_exist:
+        return render_template("reviews.html", 
+            tmdb_id=tmdb_id, 
+            movie=mongo.db.movies.find_one({"tmdb_id" : tmdb_id}),
+            reviews=mongo.db.reviews.find( { 'tmdb_id': tmdb_id }).sort("review_date", -1))
+    else:
+        flash('The last review was deleted', 'success')
+        return render_template('home.html', 
+                           first_movie=mongo.db.movies.find_one(), 
+                           movies=mongo.db.movies.find().sort("last_updated", -1))
+    
+    
 @app.route('/insertmovie', methods=["POST"])
 def insertmovie():
     tmdb_id = request.form.get('form_tmdb_id')
@@ -135,6 +147,7 @@ def insertmovie():
                            movie=mongo.db.movies.find_one({"tmdb_id" : tmdb_id}),
                            reviews=mongo.db.reviews.find( { 'tmdb_id': tmdb_id }).sort("review_date", -1))    
         else:
+            flash('No reviews have been added, be the first.', 'warning')
             return render_template('addreview.html', 
                             tmdb_id=tmdb_id,
                             movie=mongo.db.movies.find_one({"tmdb_id" : tmdb_id}),
@@ -152,6 +165,7 @@ def insertmovie():
                 'review_count':0
                 }
         movies.insert_one(post)
+        flash('No reviews have been added, be the first.', 'warning')
         return render_template('addreview.html', 
                             tmdb_id=tmdb_id,
                             movie=mongo.db.movies.find_one({"tmdb_id" : tmdb_id}),

@@ -31,6 +31,8 @@
                   {% endfor %}    </select>
   </div>
   <div> <button class="btn btn-dark" type="submit">Add Review</button>
+    <a href="{{url_for('reviews', tmdb_id=tmdb_id)}}" type="button" class="btn btn-warning btn-sm">Cancel</a>
+   
   </div>
 </form>
 

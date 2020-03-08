@@ -53,15 +53,10 @@ main #main-content .media-item {
 }
 
 main #main-content .media-item .rating {
-    position: relative;
-    left: auto;
-    float: right;
-    background-color: #47af47;
-    color: #fff;
-    height: 25px;
-    width: 25px;
-    border-radius: 50%;
-    text-align: center;
+    
+    height:15px;
+    width: 30px;
+    
   }
 
 main #main-content .media-item .vote_average {
