@@ -167,17 +167,39 @@ def search():
                         first_movie=mongo.db.movies.find_one(),
                         title='Search')
 
-@app.route("/register", methods=['GET', 'POST'])
+@app.route("/register")
 def register():
-    form = RegistrationForm()
-    if form.validate_on_submit():
-        flash(f'Account created for {form.username.data}!', 'success')
-        return redirect(url_for('home',
-        first_movie=mongo.db.movies.find_one()))
-    
-    return render_template('register.html',
-        first_movie=mongo.db.movies.find_one(),
-        form=form)
+   return render_template('register.html',
+                            first_movie=mongo.db.movies.find_one())
+
+@app.route('/registercheck', methods=['GET', 'POST'])
+def registercheck():
+    username = request.form.get('username')
+    user_exists = mongo.db.users.find_one({"username" : username})
+    if user_exists:
+        flash('Username already exists, register with another username or go to Login' , 'danger')
+        return render_template('register.html', 
+            first_movie=mongo.db.movies.find_one())   
+
+    else:
+        if request.form.get('password') == request.form.get('confirm_password'):
+            users = mongo.db.users
+            post = {'username': request.form.get('username'), 
+                'password': request.form.get('password')
+                }
+            users.insert_one(post)
+            session['user'] = username
+            flash('Registered successfully and logged in as : ' + username, 'success')
+            return render_template('home.html', 
+                           first_movie=mongo.db.movies.find_one(), 
+                           movies=mongo.db.movies.find().sort("last_updated", -1))
+   
+        else:
+            flash('Login Unsuccessful. Both passwords need to match', 'danger')
+            return render_template('register.html',
+                            first_movie=mongo.db.movies.find_one()) 
+
+
 
 @app.route("/login")
 def login():
@@ -192,7 +214,7 @@ def logincheck():
     if user_exists:
         if user_exists['password'] == request.form.get('password'):
                 session['user'] = username
-                flash("Logged successfully in as {username}", 'success')
+                flash('Logged in successfully as : ' + username, 'success')
                 return render_template('home.html', 
                         first_movie=mongo.db.movies.find_one(), 
                         movies=mongo.db.movies.find().sort("last_updated", -1))   
