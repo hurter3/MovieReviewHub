@@ -11,8 +11,11 @@
             <div class="card-header" id="heading{{review._id}}">
             <h2 class="mb-0">
             <div col-9>
-                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#{{review._id}}" aria-expanded="false" aria-controls="{{review._id}}">
-              <i class="fas fa-angle-double-down"></i>       {{review.username}} -  {{review.review_date}}
+             <div class="badge alert-secondary badge-pill" title="review rating">
+                            <span> {{ review.review_rating}}</span>
+                            </div>
+               <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#{{review._id}}" aria-expanded="false" aria-controls="{{review._id}}">
+                <i class="fas fa-angle-double-down"></i>       {{review.username}} -  {{review.review_date}}
                 </button>
             </div>
             <div col-3>
@@ -22,9 +25,14 @@
             </h2>
             </div>
             <div id="{{review._id}}" class="collapse" aria-labelledby="heading{{review._id}}" data-parent="#accordionsection">
-            <div class="card-body">
-                  {{review.description}}
-            </div>
+                <div class="card-body">
+                    <h5>
+                        {{review.category_name}} 
+                    </h5>
+                <div>           
+                        {{review.description}}
+                </div>
+                </div>
             </div>
         </div>
         {% endfor %}
