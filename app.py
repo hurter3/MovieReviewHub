@@ -173,6 +173,20 @@ def insertmovie():
                             ratings=mongo.db.ratings.find())
     
 
+@app.route('/cancelreview/<tmdb_id>')
+def cancelreview(tmdb_id):
+    reviews_exist = mongo.db.reviews.find_one({"tmdb_id" : tmdb_id})
+    if reviews_exist:
+        return render_template("reviews.html", 
+            tmdb_id=tmdb_id, 
+            movie=mongo.db.movies.find_one({"tmdb_id" : tmdb_id}),
+            reviews=mongo.db.reviews.find( { 'tmdb_id': tmdb_id }).sort("review_date", -1))
+    else:
+        mongo.db.movies.remove({'tmdb_id': tmdb_id})
+        return render_template('home.html', 
+            first_movie=mongo.db.movies.find_one(), 
+            movies=mongo.db.movies.find().sort("last_updated", -1))
+
 
 @app.route("/search", methods=["GET"])
 def search():
