@@ -38,9 +38,7 @@ function searchMovie(searchBy) {
 
 
 
-function selectMovie(tmdb_id,movie_title,poster,release_date,vote_average,movie_overview) {
-    console.log('selectmovie');
-    debugger;
+function selectMovie(tmdb_id, movie_title, poster, release_date, vote_average, movie_overview) {
     document.getElementById('form_tmdb_id').value = tmdb_id; 
     document.getElementById('form_movie_title').value = movie_title; 
     document.getElementById('form_poster_url').value = poster; 

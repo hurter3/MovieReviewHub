@@ -56,7 +56,7 @@ def addreview(tmdb_id):
         ratings=mongo.db.ratings.find())
 
 @app.route("/insertreview/<tmdb_id>", methods=["POST"])
-def insertreview(tmdb_id):
+def insertreview():
     reviews = mongo.db.reviews
     tmdb_id = request.form.get('tmdb_id')
     review_date = datetime.now().strftime('%d/%m/%Y, %H:%M:%S')
