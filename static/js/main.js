@@ -40,8 +40,11 @@ function searchMovie(searchBy) {
                     let movie_overview = data.results[i].known_for[j].overview;
                     let sel_movie_btn = `<button onclick="selectMovie(\'${tmdb_id}\')" class="btn btn-success">Select movie to review</button>`;
                     let img= "<img class='media-poster card-header' src=" + poster + " alt='image'></img>";
-                    list += '<div class="row item-border"><div class="col-md-4 col-sm">'+ img + '</div><div class="col-md-4 col-sm"><div>' + movie_header + '</div><p>'+ movie_overview + '</p>'+sel_movie_btn+'</div></div></div>' ;
-        }
+                   let part1 = '<div class="container-fluid"><div class="row row-margin-bottom"><div class="col-md-8 no-padding lib-item" data-category="view"><div class="lib-panel"><div class="row box-shadow"><div class="col-md-6">' + img + '</div><div class="col-md-6"><div class="lib-row lib-header">';
+                    let part2 =  movie_header + '<div class="lib-header-seperator"></div></div><div class="lib-row lib-desc">' + movie_overview + sel_movie_btn + '</div></div></div></div></div></div></div>';
+
+            list += part1 + part2;
+               }
         }
             }
     }
