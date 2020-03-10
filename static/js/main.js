@@ -15,15 +15,20 @@ function searchMovie(searchBy) {
     if (searchBy==="movie"){
         for (let i in data.results) {
             if (posterPath(data.results[i].poster_path)=== 'True') {
-            let movie_header = "<div><h4 id='movie_title'>" + data.results[i].title + "</h4></div>";
+            let movie_header = '<div><h4 id="movie_title">' + data.results[i].title + '</h4></div>';
             let poster = "https://image.tmdb.org/t/p/w200" + data.results[i].poster_path;
             let tmdb_id = data.results[i].id;
             let movie_overview = data.results[i].overview;
             let sel_movie_btn = `<button onclick="selectMovie(\'${tmdb_id}\')" class="btn btn-success">Select movie to review</button>`;
-            let img= "<img class='media-poster card-header' src=" + poster + " alt='image'></img>";
-            list += '<div class="row item-border"><div class="col-md-4">'+ img + '</div><div class="col-md-8"><div>' + movie_header + '</div><p>'+ movie_overview + '</p>'+sel_movie_btn+'</div></div></div>' ;
+            let img= '<img class="media-poster card-header" src=' + poster + ' alt="image"></img>';
+            let part1 = '<div class="container-fluid"><div class="row row-margin-bottom"><div class="col-md-8 no-padding lib-item" data-category="view"><div class="lib-panel"><div class="row box-shadow"><div class="col-md-6">' + img + '</div><div class="col-md-6"><div class="lib-row lib-header">';
+            let part2 =  movie_header + '<div class="lib-header-seperator"></div></div><div class="lib-row lib-desc">' + movie_overview + sel_movie_btn + '</div></div></div></div></div></div></div>';
+
+            list += part1 + part2;
+
         }
-  
+
+
 }
     } else {
         for (let i in data.results) {
@@ -35,7 +40,7 @@ function searchMovie(searchBy) {
                     let movie_overview = data.results[i].known_for[j].overview;
                     let sel_movie_btn = `<button onclick="selectMovie(\'${tmdb_id}\')" class="btn btn-success">Select movie to review</button>`;
                     let img= "<img class='media-poster card-header' src=" + poster + " alt='image'></img>";
-                    list += '<div class="row item-border"><div class="col-md-4">'+ img + '</div><div class="col-md-8"><div>' + movie_header + '</div><p>'+ movie_overview + '</p>'+sel_movie_btn+'</div></div></div>' ;
+                    list += '<div class="row item-border"><div class="col-md-4 col-sm">'+ img + '</div><div class="col-md-4 col-sm"><div>' + movie_header + '</div><p>'+ movie_overview + '</p>'+sel_movie_btn+'</div></div></div>' ;
         }
         }
             }
@@ -69,7 +74,6 @@ function selectMovie(tmdb_id) {
             format: 'json'
         },
         success: function(data) {
-    let list = "";
     
     document.getElementById('form_tmdb_id').value = tmdb_id; 
     document.getElementById('form_movie_title').value = data.title; 
