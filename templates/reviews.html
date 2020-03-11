@@ -11,18 +11,17 @@
             <div class="card-header" id="heading{{review._id}}">
             <h2 class="mb-0">
             <div col-9>
-             <div class="badge alert-secondary badge-pill" title="review rating">
-                            <span> {{ review.review_rating}}</span>
-                            </div>
+             
                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#{{review._id}}" aria-expanded="false" aria-controls="{{review._id}}">
                 <i class="fas fa-angle-double-down"></i>       {{review.username}} -  {{review.review_date}}
                 </button>
+                <div class="badge alert-secondary badge-pill review-rating" title="review rating">
+                            <span> {{ review.review_rating}}</span>
+                            </div>
             </div>
             <div col-3>
                 <a href="{{url_for('editreview', review_id=review._id,tmdb_id=tmdb_id)}}" type="button" class="btn btn-warning btn-sm">Edit</a>
-                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteConfirmModal">
-                    Delete modal
-                </button> 
+                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteConfirmModal">Delete</button> 
             </div>
             </h2>
             </div>

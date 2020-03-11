@@ -151,3 +151,10 @@ main #main-content .media-item .vote_average {
 .btn-spread {
     margin-right: 20px;
 }
+
+.review-username{
+    float: left;
+}
+.review-rating{
+    float: right;
+}

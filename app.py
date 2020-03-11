@@ -39,6 +39,7 @@ def reviews():
             tmdb_id=tmdb_id, 
             movie=mongo.db.movies.find_one({"tmdb_id" : tmdb_id}),
             reviews=mongo.db.reviews.find( { 'tmdb_id': tmdb_id }).sort("review_date", -1))
+            
     else:
         flash('No reviews have been added, be the first.', 'warning')
         return render_template('addreview.html', 
@@ -49,11 +50,18 @@ def reviews():
 
 @app.route("/addreview/<tmdb_id>")
 def addreview(tmdb_id):
-    return render_template('addreview.html', 
-        tmdb_id=tmdb_id,
-        movie=mongo.db.movies.find_one({"tmdb_id" : tmdb_id}),
-        categories=mongo.db.categories.find(),
-        ratings=mongo.db.ratings.find())
+    if 'user' in session:
+        flash('Logged in successfully as : ' + session['user'], 'success')
+        return render_template('addreview.html', 
+            tmdb_id=tmdb_id,
+            movie=mongo.db.movies.find_one({"tmdb_id" : tmdb_id}),
+            categories=mongo.db.categories.find(),
+            ratings=mongo.db.ratings.find())
+    else:
+        flash('Login or Sign up to add a review!', 'warning')
+        return render_template('login.html',
+                            first_movie=mongo.db.movies.find_one())
+
 
 @app.route("/insertreview", methods=["POST"])
 def insertreview():
@@ -257,7 +265,19 @@ def logincheck():
         return render_template('login.html',
                             first_movie=mongo.db.movies.find_one())
 
-                         
+@app.route('/logout')
+def logout():
+    if 'user' in session:
+        session.pop('user')
+        flash("Successfully logged out!", 'success')                        
+        return render_template('home.html', 
+                           first_movie=mongo.db.movies.find_one(), 
+                           movies=mongo.db.movies.find().sort("last_updated", -1))
+    else:
+        flash("No user logged on!", 'warning')                        
+        return render_template('home.html', 
+                           first_movie=mongo.db.movies.find_one(), 
+                           movies=mongo.db.movies.find().sort("last_updated", -1))
 
 
 if __name__ == '__main__':
