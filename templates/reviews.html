@@ -19,8 +19,10 @@
                 </button>
             </div>
             <div col-3>
-                  <a href="{{url_for('editreview', review_id=review._id,tmdb_id=tmdb_id)}}" type="button" class="btn btn-warning btn-sm">Edit</a>
-                  <a href="{{url_for('deletereview', review_id=review._id,tmdb_id=tmdb_id)}}" type="button" class="btn btn-danger btn-sm">Delete</a>
+                <a href="{{url_for('editreview', review_id=review._id,tmdb_id=tmdb_id)}}" type="button" class="btn btn-warning btn-sm">Edit</a>
+                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteConfirmModal">
+                    Delete modal
+                </button> 
             </div>
             </h2>
             </div>
@@ -35,8 +37,34 @@
                 </div>
             </div>
         </div>
+
+        <!--Start Modal - this is to confirm that the review will be deleted
+                        it needs to be within the for loop otherwise review is undefined -->
+
+        <div class="modal fade" id="deleteConfirmModal" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteConfirmLabel">Confirm to <bold>DELETE</bold> review?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            
+            <div class="modal-footer">
+            <form action="{{ url_for('deletereview', review_id=review._id,tmdb_id=tmdb_id) }}" method="POST">
+                <input class="btn btn-danger" type="submit" value="Delete">
+            </form>
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+            </div>
+            </div>
+        </div>
+        </div>
+        <!-- End Modal -->
+
         {% endfor %}
     </div>
+    
      {% endblock %}
      {% block image %}
      <img id="basePoster" class="media-poster card-header" src="{{movie.url}}" alt="last review">

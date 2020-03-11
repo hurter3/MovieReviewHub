@@ -55,7 +55,7 @@ def addreview(tmdb_id):
         categories=mongo.db.categories.find(),
         ratings=mongo.db.ratings.find())
 
-@app.route("/insertreview/<tmdb_id>", methods=["POST"])
+@app.route("/insertreview", methods=["POST"])
 def insertreview():
     reviews = mongo.db.reviews
     tmdb_id = request.form.get('tmdb_id')
@@ -112,9 +112,9 @@ def updatereview(review_id,tmdb_id):
                            movie=mongo.db.movies.find_one({"tmdb_id" : tmdb_id}),
                            reviews=mongo.db.reviews.find( { 'tmdb_id': tmdb_id }))
 
-@app.route('/deletereview/<review_id>/<tmdb_id>')
+@app.route('/deletereview/<review_id>/<tmdb_id>', methods=["POST"])
 def deletereview(review_id,tmdb_id):
-    mongo.db.reviews.remove({'_id': ObjectId(review_id)})
+    mongo.db.reviews.delete_one({'_id': ObjectId(review_id)})
 
     mongo.db.movies.find_one_and_update(
         {'tmdb_id': tmdb_id},
