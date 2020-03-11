@@ -19,6 +19,11 @@ mongo = PyMongo(app)
 @app.route('/')
 @app.route("/home")
 def home():
+    if 'user' in session:
+        profile_id = session['user']
+    else:
+        session['user'] = 'Guest'
+
     return render_template('home.html', 
                            first_movie=mongo.db.movies.find_one(), 
                            movies=mongo.db.movies.find().sort("last_updated", -1))
@@ -34,15 +39,12 @@ def about():
 def reviews():
     tmdb_id = request.args.get('tmdb_id')
     reviews_exist = mongo.db.reviews.find_one({"tmdb_id" : tmdb_id})
-    if 'user' in session:
-        profile_id = session['user']
-    else:
-        profile_id = 'Guest'
-
+    
     if reviews_exist:
+        flash('You are logged on as ' + session['user'] , 'warning')
         return render_template("reviews.html", 
             tmdb_id=tmdb_id,
-            profile_id = profile_id, 
+            profile_id = session['user'], 
             movie=mongo.db.movies.find_one({"tmdb_id" : tmdb_id}),
             reviews=mongo.db.reviews.find( { 'tmdb_id': tmdb_id }).sort("review_date", -1))
             
@@ -50,32 +52,20 @@ def reviews():
         flash('No reviews have been added, be the first.', 'warning')
         return render_template('addreview.html', 
             tmdb_id=tmdb_id,
-            profile_id = profile_id,
+            profile_id = session['user'],
             movie=mongo.db.movies.find_one({"tmdb_id" : tmdb_id}),
             categories=mongo.db.categories.find(),
             ratings=mongo.db.ratings.find())
 
 @app.route("/addreview/<tmdb_id>")
 def addreview(tmdb_id):
-    if 'user' in session:
-        return render_template('addreview.html', 
+    return render_template('addreview.html', 
             tmdb_id=tmdb_id,
             profile_id = session['user'],
             movie=mongo.db.movies.find_one({"tmdb_id" : tmdb_id}),
             categories=mongo.db.categories.find(),
             ratings=mongo.db.ratings.find())
-    else:
-        flash('You are using the Guest profile, Login/Register to prevent others editing/deleting your reviews', 'warning')
-        session['user'] = 'Guest'
-        return render_template('addreview.html', 
-            tmdb_id=tmdb_id,
-            profile_id = session['user'],
-            movie=mongo.db.movies.find_one({"tmdb_id" : tmdb_id}),
-            categories=mongo.db.categories.find(),
-            ratings=mongo.db.ratings.find())
- 
-
-
+    
 @app.route("/insertreview", methods=["POST"])
 def insertreview():
     reviews = mongo.db.reviews
@@ -100,37 +90,24 @@ def insertreview():
     )
     flash('Review added successfully!', 'success')
     return render_template("reviews.html", 
-        tmdb_id=tmdb_id, 
+        tmdb_id=tmdb_id,
+        profile_id = session['user'], 
         movie=mongo.db.movies.find_one({"tmdb_id" : tmdb_id}),
         reviews=mongo.db.reviews.find( { 'tmdb_id': tmdb_id }).sort("review_date", -1))
     
 
 @app.route('/editreview/<review_id>/<tmdb_id>')
 def editreview(review_id,tmdb_id):
-    if 'user' in session:
-        the_review =  mongo.db.reviews.find_one({"_id": ObjectId(review_id)})
-        if session['user'] == the_review['username']:
-            all_categories =  mongo.db.categories.find()
-            return render_template('editreview.html',
-                            review=the_review,
-                            tmdb_id=tmdb_id,
-                            movie=mongo.db.movies.find_one({"tmdb_id" : tmdb_id}),
-                            categories=all_categories,
-                            ratings=mongo.db.ratings.find())
-        else:
-            flash('You are logged on as ' + session['user'] + ' and can only EDIT those reviews!', 'warning')
-            return render_template("reviews.html", 
-            tmdb_id=tmdb_id, 
-            movie=mongo.db.movies.find_one({"tmdb_id" : tmdb_id}),
-            reviews=mongo.db.reviews.find( { 'tmdb_id': tmdb_id }).sort("review_date", -1))
-    else:
-        session['user'] = 'Guest'
-        flash('You are logged on as ' + session['user'] + ' and can only EDIT those reviews!', 'warning')
-        return render_template("reviews.html", 
-        tmdb_id=tmdb_id, 
-        movie=mongo.db.movies.find_one({"tmdb_id" : tmdb_id}),
-        reviews=mongo.db.reviews.find( { 'tmdb_id': tmdb_id }).sort("review_date", -1))
-
+    the_review =  mongo.db.reviews.find_one({"_id": ObjectId(review_id)})
+    
+    all_categories =  mongo.db.categories.find()
+    return render_template('editreview.html',
+                    review=the_review,
+                    tmdb_id=tmdb_id,
+                    movie=mongo.db.movies.find_one({"tmdb_id" : tmdb_id}),
+                    categories=all_categories,
+                    ratings=mongo.db.ratings.find())
+    
 @app.route('/updatereview/<review_id>/<tmdb_id>', methods=["POST"])
 def updatereview(review_id,tmdb_id):
     reviews = mongo.db.reviews
@@ -145,73 +122,52 @@ def updatereview(review_id,tmdb_id):
         'tmdb_id':  tmdb_id})
     flash('Review updated successfully', 'success')
     return render_template("reviews.html", tmdb_id=tmdb_id,
-                           movie=mongo.db.movies.find_one({"tmdb_id" : tmdb_id}),
-                           reviews=mongo.db.reviews.find( { 'tmdb_id': tmdb_id }).sort("review_date", -1))
+                        profile_id = session['user'],
+                        movie=mongo.db.movies.find_one({"tmdb_id" : tmdb_id}),
+                        reviews=mongo.db.reviews.find( { 'tmdb_id': tmdb_id }).sort("review_date", -1))
 
 @app.route('/deletereview/<review_id>/<tmdb_id>', methods=["POST"])
 def deletereview(review_id,tmdb_id):
-    if 'user' in session:
-        the_review =  mongo.db.reviews.find_one({"_id": ObjectId(review_id)})
-        if session['user'] == the_review['username']:
-            mongo.db.reviews.delete_one({'_id': ObjectId(review_id)})
-            mongo.db.movies.find_one_and_update(
-                {'tmdb_id': tmdb_id},
-                {'$inc': {'review_count': -1}}
-            )
-            reviews_exist = mongo.db.reviews.find_one({"tmdb_id" : tmdb_id})
-            if reviews_exist:
-                flash('Review deleted successfully!', 'success')
-                return render_template("reviews.html", 
-                    tmdb_id=tmdb_id, 
-                    movie=mongo.db.movies.find_one({"tmdb_id" : tmdb_id}),
-                    reviews=mongo.db.reviews.find( { 'tmdb_id': tmdb_id }).sort("review_date", -1))
-            else:
-                flash('The last review was deleted', 'success')
-                mongo.db.movies.remove({'tmdb_id': tmdb_id})
-                return render_template('home.html', 
-                    first_movie=mongo.db.movies.find_one(), 
-                    movies=mongo.db.movies.find().sort("last_updated", -1))
-        else:
-            flash('You are logged on as ' + session['user'] + ' and can only delete those reviews!', 'warning')
-            return render_template("reviews.html", 
-            tmdb_id=tmdb_id, 
+    the_review =  mongo.db.reviews.find_one({"_id": ObjectId(review_id)})
+    mongo.db.reviews.delete_one({'_id': ObjectId(review_id)})
+    mongo.db.movies.find_one_and_update(
+        {'tmdb_id': tmdb_id},
+        {'$inc': {'review_count': -1}}
+    )
+    reviews_exist = mongo.db.reviews.find_one({"tmdb_id" : tmdb_id})
+    if reviews_exist:
+        flash('Review deleted successfully!', 'success')
+        return render_template("reviews.html", 
+            tmdb_id=tmdb_id,
+            profile_id = session['user'], 
             movie=mongo.db.movies.find_one({"tmdb_id" : tmdb_id}),
             reviews=mongo.db.reviews.find( { 'tmdb_id': tmdb_id }).sort("review_date", -1))
     else:
-        session['user'] = 'Guest'
-        flash('You are logged on as ' + session['user'] + ' and can only DELETE those reviews!', 'warning')
-        return render_template("reviews.html", 
-        tmdb_id=tmdb_id, 
-        movie=mongo.db.movies.find_one({"tmdb_id" : tmdb_id}),
-        reviews=mongo.db.reviews.find( { 'tmdb_id': tmdb_id }).sort("review_date", -1))
+        flash('The last review was deleted succesfully!', 'success')
+        mongo.db.movies.remove({'tmdb_id': tmdb_id})
+        return render_template('home.html', 
+            first_movie=mongo.db.movies.find_one(), 
+            movies=mongo.db.movies.find().sort("last_updated", -1))
 
-
-
-    
-    
 @app.route('/insertmovie', methods=['GET', 'POST'])
 def insertmovie():
     tmdb_id = request.form.get('form_tmdb_id')
     movie_url = request.form.get('form_poster_url')
     movie_in_collection = mongo.db.movies.find_one({"tmdb_id" : tmdb_id})
     reviews_exist = mongo.db.reviews.find_one({"tmdb_id" : tmdb_id})
-    if 'user' in session:
-        profile_id = session['user']
-    else:
-        session['user'] = 'Guest'
-        profile_id = 'Guest'
-
+    
     if movie_in_collection:
         if reviews_exist:
             return render_template("reviews.html", 
-                           tmdb_id=tmdb_id, 
+                           tmdb_id=tmdb_id,
+                           profile_id = session['user'], 
                            movie=mongo.db.movies.find_one({"tmdb_id" : tmdb_id}),
                            reviews=mongo.db.reviews.find( { 'tmdb_id': tmdb_id }).sort("review_date", -1))    
         else:
-            flash('You are logged on as ' + profile_id + ' there are no reviews, be the first.', 'warning')
+            flash('You are logged on as ' + session['user']+ ' there are no reviews, be the first.', 'warning')
             return render_template('addreview.html', 
                             tmdb_id=tmdb_id,
-                            profile_id=profile_id,
+                            profile_id=session['user'],
                             movie=mongo.db.movies.find_one({"tmdb_id" : tmdb_id}),
                             categories=mongo.db.categories.find(),
                             ratings=mongo.db.ratings.find())        
@@ -227,10 +183,10 @@ def insertmovie():
                 'review_count':0
                 }
         movies.insert_one(post)
-        flash('You logged on as ' + profile_id + 'there are no reviews, be the first.', 'warning')
+        flash('You logged on as ' + session['user'] + ' there are no reviews, be the first.', 'warning')
         return render_template('addreview.html', 
                             tmdb_id=tmdb_id,
-                            profile_id= profile_id,
+                            profile_id= session['user'],
                             movie=mongo.db.movies.find_one({"tmdb_id" : tmdb_id}),
                             categories=mongo.db.categories.find(),
                             ratings=mongo.db.ratings.find())  
@@ -242,6 +198,7 @@ def cancelreview(tmdb_id):
     if reviews_exist:
         return render_template("reviews.html", 
             tmdb_id=tmdb_id, 
+            profile_id=session['user'],
             movie=mongo.db.movies.find_one({"tmdb_id" : tmdb_id}),
             reviews=mongo.db.reviews.find( { 'tmdb_id': tmdb_id }).sort("review_date", -1))
     else:
@@ -253,6 +210,11 @@ def cancelreview(tmdb_id):
 
 @app.route("/search", methods=["GET"])
 def search():
+    if 'user' in session:
+        profile_id = session['user']
+    else:
+        profile_id = 'Guest'
+        session['user'] = 'Guest'
 
     return render_template('search.html',
                         first_movie=mongo.db.movies.find_one(),
@@ -322,20 +284,20 @@ def logincheck():
         return render_template('login.html',
                             first_movie=mongo.db.movies.find_one())
 
-@app.route('/logout')
-def logout():
-    if 'user' in session:
-        session.pop('user')
-        flash("Successfully logged out!", 'success')                        
-        return render_template('home.html', 
-                           first_movie=mongo.db.movies.find_one(), 
-                           movies=mongo.db.movies.find().sort("last_updated", -1))
-    else:
-        flash("No user logged on!", 'warning')                        
-        return render_template('home.html', 
-                           first_movie=mongo.db.movies.find_one(), 
-                           movies=mongo.db.movies.find().sort("last_updated", -1))
-
+#@app.route('/logout')
+#def logout():
+#    if 'user' in session:
+#        session.pop('user')
+#        flash("Successfully logged out!", 'success')                        
+#        return render_template('home.html', 
+#                           first_movie=mongo.db.movies.find_one(), 
+#                           movies=mongo.db.movies.find().sort("last_updated", -1))
+#    else:
+#        flash("No user logged on!", 'warning')                        
+#        return render_template('home.html', 
+#                           first_movie=mongo.db.movies.find_one(), 
+#                           movies=mongo.db.movies.find().sort("last_updated", -1))
+#
 
 if __name__ == '__main__':
     app.run(host=os.environ.get('IP'),
