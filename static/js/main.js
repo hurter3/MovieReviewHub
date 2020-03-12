@@ -19,10 +19,10 @@ function searchMovie(searchBy) {
             let poster = "https://image.tmdb.org/t/p/w200" + data.results[i].poster_path;
             let tmdb_id = data.results[i].id;
             let movie_overview = data.results[i].overview;
-            let sel_movie_btn = `<button onclick="selectMovie(\'${tmdb_id}\')" class="btn btn-success">Select movie to review</button>`;
+            let sel_movie_btn = `<button onclick="selectMovie(\'${tmdb_id}\')" class="btn btn-success btn-spread">The Reviews</button>`;
             let img= '<img class="media-poster card-header" src=' + poster + ' alt="image"></img>';
             let part1 = '<div class="container-fluid"><div class="row row-margin-bottom"><div class="col-md-8 no-padding lib-item" data-category="view"><div class="lib-panel"><div class="row box-shadow"><div class="col-md-6">' + img + '</div><div class="col-md-6"><div class="lib-row lib-header">';
-            let part2 =  movie_header + '<div class="lib-header-seperator"></div></div><div class="lib-row lib-desc">' + movie_overview + sel_movie_btn + '</div></div></div></div></div></div></div>';
+            let part2 =  movie_header + '<div class="lib-header-seperator"></div></div><div class="lib-row lib-desc">' + movie_overview + '<div>' + sel_movie_btn + '</div></div></div></div></div></div></div></div>';
 
             list += part1 + part2;
 
@@ -38,10 +38,10 @@ function searchMovie(searchBy) {
                     let poster = "https://image.tmdb.org/t/p/w200" + data.results[i].known_for[j].poster_path;
                     let tmdb_id = data.results[i].known_for[j].id;
                     let movie_overview = data.results[i].known_for[j].overview;
-                    let sel_movie_btn = `<button onclick="selectMovie(\'${tmdb_id}\')" class="btn btn-success">Select movie to review</button>`;
+                    let sel_movie_btn = `<button onclick="selectMovie(\'${tmdb_id}\')" class="btn btn-success btn-spread">Explore Reviews</button>`;
                     let img= "<img class='media-poster card-header' src=" + poster + " alt='image'></img>";
                    let part1 = '<div class="container-fluid"><div class="row row-margin-bottom"><div class="col-md-8 no-padding lib-item" data-category="view"><div class="lib-panel"><div class="row box-shadow"><div class="col-md-6">' + img + '</div><div class="col-md-6"><div class="lib-row lib-header">';
-                    let part2 =  movie_header + '<div class="lib-header-seperator"></div></div><div class="lib-row lib-desc">' + movie_overview + sel_movie_btn + '</div></div></div></div></div></div></div>';
+                    let part2 =  movie_header + '<div class="lib-header-seperator"></div></div><div class="lib-row lib-desc">' + movie_overview + '<div>' + sel_movie_btn + '</div></div></div></div></div></div></div></div>';
 
             list += part1 + part2;
                }
