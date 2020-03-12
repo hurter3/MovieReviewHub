@@ -158,4 +158,5 @@ main #main-content .media-item .vote_average {
 }
 .review-rating{
     float: right;
+    background-color: #b0b3b6;
 }
