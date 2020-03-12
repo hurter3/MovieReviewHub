@@ -38,9 +38,20 @@
 
 {% endblock %}
 {% block image %}
-     <img id="basePoster" class="media-poster card-header" src="{{movie.url}}" alt="last review">
-     {% endblock %}
+    
+    <h4> {{ movie.movie_title}}</h4>
+    <img id="basePoster" class="card-header" src="{{movie.url}}" alt="last review">
+     {% endblock image %}
 
-{% block title %}
-     <h3 id="baseTitle"> {{movie.title}} </h3>
-     {% endblock %}
+     
+{% block leaderBoard %}
+ 
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Review average :
+                        <span class="badge badge-primary badge-pill">   {{ movie.vote_average}}</span>
+                    </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                       <span> Release Date : {{ movie.release_date}}</span>
+                </li>
+    
+{% endblock leaderBoard %}
