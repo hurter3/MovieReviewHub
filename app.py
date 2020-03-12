@@ -24,16 +24,30 @@ def home():
     else:
         session['user'] = 'Guest'
 
+    all_users = mongo.db.users.find().sort("reviews_made", -1).limit(1)
+    for user in all_users:
+        top_user = user['username']
+        top_count = user['reviews_made']
+
     return render_template('home.html', 
                            first_movie=mongo.db.movies.find_one(), 
-                           movies=mongo.db.movies.find().sort("last_updated", -1))
+                           movies=mongo.db.movies.find().sort("last_updated", -1),
+                           top_user=top_user,
+                           top_count=top_count)
+                                            
 
 
 @app.route("/about")
 def about():
+    all_users = mongo.db.users.find().sort("reviews_made", -1).limit(1)
+    for user in all_users:
+        top_user = user['username']
+        top_count = user['reviews_made']
+
     return render_template('about.html',
                             first_movie=mongo.db.movies.find_one(),
-                            title='About')
+                            top_user=top_user,
+                            top_count=top_count)
 
 @app.route('/reviews/')
 def reviews():
@@ -216,25 +230,48 @@ def search():
         profile_id = 'Guest'
         session['user'] = 'Guest'
 
+    all_users = mongo.db.users.find().sort("reviews_made", -1).limit(1)
+    for user in all_users:
+        top_user = user['username']
+        top_count = user['reviews_made']
+
     return render_template('search.html',
                         first_movie=mongo.db.movies.find_one(),
-                        title='Search')
+                        title='Search',
+                        top_user=top_user,
+                        top_count=top_count)
 
 @app.route("/register")
 def register():
     if 'user' in session:
         session.pop('user')
+    
+    all_users = mongo.db.users.find().sort("reviews_made", -1).limit(1)
+    for user in all_users:
+        top_user = user['username']
+        top_count = user['reviews_made']
+
     return render_template('register.html',
-                            first_movie=mongo.db.movies.find_one())
+                            first_movie=mongo.db.movies.find_one(),
+                            top_user=top_user,
+                            top_count=top_count)
 
 @app.route('/registercheck', methods=['GET', 'POST'])
 def registercheck():
+
+    all_users = mongo.db.users.find().sort("reviews_made", -1).limit(1)
+    for user in all_users:
+        top_user = user['username']
+        top_count = user['reviews_made']
+
     username = request.form.get('username')
     user_exists = mongo.db.users.find_one({"username" : username})
     if user_exists:
         flash('Username already exists, register with another username or go to Login' , 'danger')
         return render_template('register.html', 
-            first_movie=mongo.db.movies.find_one())   
+            first_movie=mongo.db.movies.find_one(),
+            top_user=top_user,
+            top_count=top_count)   
 
     else:
         if request.form.get('password') == request.form.get('confirm_password'):
@@ -247,12 +284,16 @@ def registercheck():
             flash('Registered successfully and logged in as : ' + username, 'success')
             return render_template('home.html', 
                            first_movie=mongo.db.movies.find_one(), 
-                           movies=mongo.db.movies.find().sort("last_updated", -1))
+                           movies=mongo.db.movies.find().sort("last_updated", -1),
+                           top_user=top_user,
+                           top_count=top_count)
    
         else:
             flash('Login Unsuccessful. Both passwords need to match', 'danger')
             return render_template('register.html',
-                            first_movie=mongo.db.movies.find_one()) 
+                            first_movie=mongo.db.movies.find_one(),
+                            top_user=top_user,
+                            top_count=top_count) 
 
 
 
@@ -260,11 +301,24 @@ def registercheck():
 def login():
     if 'user' in session:
         session.pop('user')
+
+    all_users = mongo.db.users.find().sort("reviews_made", -1).limit(1)
+    for user in all_users:
+        top_user = user['username']
+        top_count = user['reviews_made']
+     
     return render_template('login.html',
-                            first_movie=mongo.db.movies.find_one())
+                            first_movie=mongo.db.movies.find_one(),
+                            top_user=top_user,
+                            top_count=top_count)
 
 @app.route('/logincheck', methods=['GET', 'POST'])
 def logincheck():
+    all_users = mongo.db.users.find().sort("reviews_made", -1).limit(1)
+    for user in all_users:
+        top_user = user['username']
+        top_count = user['reviews_made']
+
     username = request.form.get('username')
     password = request.form.get('password')
     user_exists = mongo.db.users.find_one({"username" : username})
@@ -274,15 +328,21 @@ def logincheck():
                 flash('Logged in successfully as : ' + username, 'success')
                 return render_template('home.html', 
                         first_movie=mongo.db.movies.find_one(), 
-                        movies=mongo.db.movies.find().sort("last_updated", -1))   
+                        movies=mongo.db.movies.find().sort("last_updated", -1),
+                        top_user=top_user,
+                        top_count=top_count)   
         else:
             flash('Login Unsuccessful. Please check password', 'danger')
             return render_template('login.html',
-                            first_movie=mongo.db.movies.find_one())        
+                            first_movie=mongo.db.movies.find_one(),
+                            top_user=top_user,
+                            top_count=top_count)        
     else:
         flash('Login Unsuccessful. Please check username and password', 'danger')
         return render_template('login.html',
-                            first_movie=mongo.db.movies.find_one())
+                            first_movie=mongo.db.movies.find_one(),
+                            top_user=top_user,
+                            top_count=top_count)   
 
 #@app.route('/logout')
 #def logout():
