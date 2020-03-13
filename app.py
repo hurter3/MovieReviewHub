@@ -90,6 +90,11 @@ def insertreview():
         {'tmdb_id': tmdb_id},
         {'$set': {'last_updated': review_date}}
     )
+
+    mongo.db.users.update_one (
+        {'username': session['user']},
+        {'$inc': {'reviews_made': 1}}
+    )
     flash('Review added successfully!', 'success')
     return render_template("reviews.html", 
         tmdb_id=tmdb_id,
@@ -136,6 +141,11 @@ def deletereview(review_id,tmdb_id):
         {'tmdb_id': tmdb_id},
         {'$inc': {'review_count': -1}}
     )
+    mongo.db.users.find_one_and_update(
+        {'username': session['user']},
+        {'$inc': {'reviews_made': -1}}
+    )
+
     reviews_exist = mongo.db.reviews.find_one({"tmdb_id" : tmdb_id})
     if reviews_exist:
         flash('Review deleted successfully!', 'success')
