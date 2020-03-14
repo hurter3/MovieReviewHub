@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Personal CSS styling -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- included this line to prevent "GET /favicon.ico HTTP/1.1" 404 --->
+    <link rel="shortcut icon" href="">
   
     <!-- Title appended to default title if passed through to rendered template -->
     {% if title %}

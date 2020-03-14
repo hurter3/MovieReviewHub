@@ -9,6 +9,7 @@ if path.exists("env.py"):
     import env
 
 app = Flask(__name__)
+# MongoDB config
 
 app.config["MONGO_DBNAME"] = os.environ.get('MONGO_DBNAME') 
 app.config["MONGO_URI"] = os.environ.get('MONGO_URI')
@@ -16,6 +17,7 @@ app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 
 mongo = PyMongo(app)
 
+# Index and Home page to display a list of movies that have reviews 
 @app.route('/')
 @app.route("/home")
 def home():
@@ -23,25 +25,23 @@ def home():
         profile_id = session['user']
     else:
         session['user'] = 'Guest'
-
     return render_template('home.html', 
                            first_movie=mongo.db.movies.find_one(), 
                            movies=mongo.db.movies.find().sort("last_updated", -1),
                            top_user=mongo.db.users.find().limit(1).sort("reviews_made", -1))
-                                            
 
-
+# About page 
 @app.route("/about")
 def about():
     return render_template('about.html',
                             first_movie=mongo.db.movies.find_one(),
                             top_user=mongo.db.users.find().limit(1).sort("reviews_made", -1))
 
+# Reviews for a selected move from the home or search pages, if no reviews have been made you are taken to addreviews.
 @app.route('/reviews/')
 def reviews():
     tmdb_id = request.args.get('tmdb_id')
     reviews_exist = mongo.db.reviews.find_one({"tmdb_id" : tmdb_id})
-    
     if reviews_exist:
         flash('You are logged on as ' + session['user'] , 'warning')
         return render_template("reviews.html", 
@@ -49,7 +49,6 @@ def reviews():
             profile_id = session['user'], 
             movie=mongo.db.movies.find_one({"tmdb_id" : tmdb_id}),
             reviews=mongo.db.reviews.find( { 'tmdb_id': tmdb_id }).sort("review_date", -1))
-            
     else:
         flash('No reviews have been added, be the first.', 'warning')
         return render_template('addreview.html', 
@@ -59,6 +58,7 @@ def reviews():
             categories=mongo.db.categories.find(),
             ratings=mongo.db.ratings.find())
 
+# Add review page has 2 collections used for select item listings
 @app.route("/addreview/<tmdb_id>")
 def addreview(tmdb_id):
     return render_template('addreview.html', 
@@ -68,6 +68,8 @@ def addreview(tmdb_id):
             categories=mongo.db.categories.find(),
             ratings=mongo.db.ratings.find())
     
+# One review is inserted to the reviews collection. The movie review count is incremented with the datetime stamp.
+# The users collection reviews_made is alo increemented
 @app.route("/insertreview", methods=["POST"])
 def insertreview():
     reviews = mongo.db.reviews
@@ -81,7 +83,6 @@ def insertreview():
             'review_date': review_date,
             'tmdb_id':  request.form.get('tmdb_id')}
     reviews.insert_one(post)
-
     mongo.db.movies.update_one (
         {'tmdb_id': tmdb_id},
         {'$inc': {'review_count': 1}}
@@ -90,7 +91,6 @@ def insertreview():
         {'tmdb_id': tmdb_id},
         {'$set': {'last_updated': review_date}}
     )
-
     mongo.db.users.update_one (
         {'username': session['user']},
         {'$inc': {'reviews_made': 1}}
@@ -101,12 +101,11 @@ def insertreview():
         profile_id = session['user'], 
         movie=mongo.db.movies.find_one({"tmdb_id" : tmdb_id}),
         reviews=mongo.db.reviews.find( { 'tmdb_id': tmdb_id }).sort("review_date", -1))
-    
 
+# Edit review can only be access for your own reviews   
 @app.route('/editreview/<review_id>/<tmdb_id>')
 def editreview(review_id,tmdb_id):
     the_review =  mongo.db.reviews.find_one({"_id": ObjectId(review_id)})
-    
     all_categories =  mongo.db.categories.find()
     return render_template('editreview.html',
                     review=the_review,
@@ -115,6 +114,7 @@ def editreview(review_id,tmdb_id):
                     categories=all_categories,
                     ratings=mongo.db.ratings.find())
     
+# Update review is triggered from the edit review page
 @app.route('/updatereview/<review_id>/<tmdb_id>', methods=["POST"])
 def updatereview(review_id,tmdb_id):
     reviews = mongo.db.reviews
@@ -133,10 +133,10 @@ def updatereview(review_id,tmdb_id):
                         movie=mongo.db.movies.find_one({"tmdb_id" : tmdb_id}),
                         reviews=mongo.db.reviews.find( { 'tmdb_id': tmdb_id }).sort("review_date", -1))
 
+# Delete confirm screen to ensure the review is not accidentally deleted
 @app.route('/deleteconfirm/<review_id>/<tmdb_id>')
 def deleteconfirm(review_id,tmdb_id):
     the_review =  mongo.db.reviews.find_one({"_id": ObjectId(review_id)})
-    
     all_categories =  mongo.db.categories.find()
     return render_template('deleteconfirm.html',
                     review=the_review,
@@ -145,8 +145,9 @@ def deleteconfirm(review_id,tmdb_id):
                     categories=all_categories,
                     ratings=mongo.db.ratings.find())
 
-
-
+# The delete review is only displayed for your own reviews.
+# The review is deleted from the reviews collection and movies collection count is reduced.
+# The users reviews_made is also reduced, if no mre reviews exist then the movie is also deleted from the movies collection
 @app.route('/deletereview/<review_id>/<tmdb_id>', methods=["POST"])
 def deletereview(review_id,tmdb_id):
     the_review =  mongo.db.reviews.find_one({"_id": ObjectId(review_id)})
@@ -159,7 +160,6 @@ def deletereview(review_id,tmdb_id):
         {'username': session['user']},
         {'$inc': {'reviews_made': -1}}
     )
-
     reviews_exist = mongo.db.reviews.find_one({"tmdb_id" : tmdb_id})
     if reviews_exist:
         flash('Review deleted successfully!', 'success')
@@ -175,13 +175,13 @@ def deletereview(review_id,tmdb_id):
             first_movie=mongo.db.movies.find_one(), 
             movies=mongo.db.movies.find().sort("last_updated", -1))
 
+# Insert to the movies collection is made when a movie is selected and there are no reviews yet.
 @app.route('/insertmovie', methods=['GET', 'POST'])
 def insertmovie():
     tmdb_id = request.form.get('form_tmdb_id')
     movie_url = request.form.get('form_poster_url')
     movie_in_collection = mongo.db.movies.find_one({"tmdb_id" : tmdb_id})
     reviews_exist = mongo.db.reviews.find_one({"tmdb_id" : tmdb_id})
-    
     if movie_in_collection:
         if reviews_exist:
             return render_template("reviews.html", 
@@ -217,7 +217,9 @@ def insertmovie():
                             categories=mongo.db.categories.find(),
                             ratings=mongo.db.ratings.find())  
     
-
+# The cancelreview is reached from the addreview screen but the user decides not to add a review.
+# If reviews exist then the reviews screen is displayed but if no reviews exist then the
+# movie needs to be deleted from the movies collection .
 @app.route('/cancelreview/<tmdb_id>')
 def cancelreview(tmdb_id):
     reviews_exist = mongo.db.reviews.find_one({"tmdb_id" : tmdb_id})
@@ -233,7 +235,7 @@ def cancelreview(tmdb_id):
             first_movie=mongo.db.movies.find_one(), 
             movies=mongo.db.movies.find().sort("last_updated", -1))
 
-
+# Search sets a default Guest login profile for anonymous users
 @app.route("/search", methods=["GET"])
 def search():
     if 'user' in session:
@@ -241,20 +243,20 @@ def search():
     else:
         profile_id = 'Guest'
         session['user'] = 'Guest'
-
     return render_template('search.html',
                         first_movie=mongo.db.movies.find_one(),
                         top_user=mongo.db.users.find().limit(1).sort("reviews_made", -1))
 
+#register page pops the user if the user wants to register as i decided to remove the logout functionality
 @app.route("/register")
 def register():
     if 'user' in session:
         session.pop('user')
-    
     return render_template('register.html',
                             first_movie=mongo.db.movies.find_one(),
                             top_user=mongo.db.users.find().limit(1).sort("reviews_made", -1))
 
+#registercheck does user validation and no password encryption is used as the project does not required authentification
 @app.route('/registercheck', methods=['GET', 'POST'])
 def registercheck():
     username = request.form.get('username')
@@ -264,7 +266,6 @@ def registercheck():
         return render_template('register.html', 
             first_movie=mongo.db.movies.find_one(),
             top_user=mongo.db.users.find().limit(1).sort("reviews_made", -1))
-
     else:
         if request.form.get('password') == request.form.get('confirm_password'):
             users = mongo.db.users
@@ -278,7 +279,6 @@ def registercheck():
                            first_movie=mongo.db.movies.find_one(), 
                            movies=mongo.db.movies.find().sort("last_updated", -1),
                            top_user=mongo.db.users.find().limit(1).sort("reviews_made", -1))
-   
         else:
             flash('Login Unsuccessful. Both passwords need to match', 'danger')
             return render_template('register.html',
@@ -286,16 +286,16 @@ def registercheck():
                             top_user=mongo.db.users.find().limit(1).sort("reviews_made", -1))
 
 
-
+#login page pops the user if the user wants to register as i decided to remove the logout functionality
 @app.route("/login")
 def login():
     if 'user' in session:
         session.pop('user')
-
     return render_template('login.html',
                             first_movie=mongo.db.movies.find_one(),
                             top_user=mongo.db.users.find().limit(1).sort("reviews_made", -1))
 
+#logincheck does user validation and no password encryption is used as the project does not required authentification
 @app.route('/logincheck', methods=['GET', 'POST'])
 def logincheck():
     username = request.form.get('username')
@@ -319,21 +319,6 @@ def logincheck():
         return render_template('login.html',
                             first_movie=mongo.db.movies.find_one(),
                             top_user=mongo.db.users.find().limit(1).sort("reviews_made", -1)) 
-
-#@app.route('/logout')
-#def logout():
-#    if 'user' in session:
-#        session.pop('user')
-#        flash("Successfully logged out!", 'success')                        
-#        return render_template('home.html', 
-#                           first_movie=mongo.db.movies.find_one(), 
-#                           movies=mongo.db.movies.find().sort("last_updated", -1))
-#    else:
-#        flash("No user logged on!", 'warning')                        
-#        return render_template('home.html', 
-#                           first_movie=mongo.db.movies.find_one(), 
-#                           movies=mongo.db.movies.find().sort("last_updated", -1))
-#
 
 if __name__ == '__main__':
     app.run(host=os.environ.get('IP'),
