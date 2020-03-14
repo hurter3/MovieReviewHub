@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>DELETE REVIEW CONFIRMATION</h1>
+    <h2>DELETE REVIEW CONFIRMATION</h2>
     <form action="{{ url_for('deletereview', review_id=review._id,tmdb_id=tmdb_id) }}" method="POST">
         <div class="form-group">
             <label for="exampleFormControlInput1">Movie Title</label>

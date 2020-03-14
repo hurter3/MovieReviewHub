@@ -4,12 +4,12 @@ body {
   margin-top: 5rem;
 }
 
-h1, h2, h3, h5, h6 {
+h1, h3, h5, h6 {
   color: #444444;
   text-align: center
 }
 
-h1 {
+h2 {
   color: #f30a0a;
   text-align: center
 }
@@ -167,3 +167,7 @@ main #main-content .media-item .vote_average {
     background-color: #d9dde0;
 }
 
+.about{ font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+font-size: 20px;
+
+}
