@@ -3,26 +3,26 @@
     <h1>About Page</h1>
 {% endblock content %}
 {% block image %}
-    
     <h4> {{ first_movie.movie_title}}</h4>
     <img id="basePoster" class="card-header" src="{{first_movie.url}}" alt="last review">
-     {% endblock image %}
+{% endblock image %}
 
 {% block leaderBoard %}
- <li class="list-group-item list-group-item-light" >
-  <h6> Top voted Movie</h6> </li>
+    <li class="list-group-item list-group-item-light" >
+        <h6> Top voted Movie</h6>
+    </li>
     <li class="list-group-item d-flex justify-content-between align-items-center">
-                        Review average :
-                        <span class="badge badge-primary badge-pill">   {{ first_movie.vote_average}}</span>
-                    </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                       <span> Release Date : {{ first_movie.release_date}}</span>
-                </li>
-<li class="list-group-item list-group-item-light" >
-                <h6>Most reviews posted by</h6></li>  
-                    {% for user in top_user%}
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    {{ user.username}} <span class="badge badge-primary badge-pill">{{ user.reviews_made}}</span>
-                </li>
-                {%endfor%}           
+        Review average : <span class="badge badge-primary badge-pill">   {{ first_movie.vote_average}}</span>
+    </li>
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+        <span> Release Date : {{ first_movie.release_date}}</span>
+    </li>
+    <li class="list-group-item list-group-item-light" >
+        <h6>Most reviews posted by</h6>
+    </li>  
+        {% for user in top_user%}
+            <li class="list-group-item d-flex justify-content-between align-items-center">{{ user.username}}
+                <span class="badge badge-primary badge-pill">{{ user.reviews_made}}</span>
+            </li>
+        {%endfor%}         
 {% endblock leaderBoard %}

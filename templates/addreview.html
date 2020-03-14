@@ -1,60 +1,57 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'base.html' %} 
 
+{% block content %}
 <form action="{{ url_for('insertreview',tmdb_id=tmdb_id)}}" method="POST">
-    <input type="text" class="form-control" id="tmdb_id" name="tmdb_id" value={{tmdb_id}} hidden>
-  <div class="form-group">
-    <label for="exampleFormControlInput1">Username</label>
-    <input type="text" class="form-control" id="username" name="username" value={{profile_id}} readonly>
-  </div>
-   <div class="form-group">
-    <label for="exampleFormControlInput1">Movie Title</label>
-    <input type="text" class="form-control" id="movie_title" name="movie_title" value="{{movie.movie_title}}" readonly>
-  </div>
-  <div class="form-group">
-    <label for="exampleFormControlSelect1">Movie category</label>
-    <select class="form-control" id="category_name" name="category_name" required>
-    <option value="" disabled selected>Choose Category</option>
-      {% for cat in categories %}
-                      <option value="{{cat.category_name}}">{{cat.category_name}}</option>
-                  {% endfor %}    </select>
-  </div>
-  <div class="form-group">
-    <label for="exampleFormControlTextarea1">Description</label>
-    <textarea class="form-control" id="description" rows="2" name="description" required></textarea>
-  </div>
-  <div class="form-group">
-    <label for="exampleFormControlSelect1">Rating</label>
-    <select class="form-control" id="review_rating" name="review_rating" required>
-      <option value="" disabled selected>Choose a rating, 1 (poor) to 5 (excellent)</option>
-        {% for rating in ratings %}
-                      <option value="{{rating.review_rating}}">{{rating.review_rating}}</option>
-                  {% endfor %}    </select>
-  </div>
-  <div> <button class="btn btn-dark" type="submit">Add Review</button>
-    <a href="{{url_for('cancelreview', tmdb_id=tmdb_id)}}" type="button" class="btn btn-warning btn-sm">Cancel</a>
-   
-  </div>
+        <input type="text" class="form-control" id="tmdb_id" name="tmdb_id" value={{tmdb_id}} hidden>
+    <div class="form-group">
+        <label for="exampleFormControlInput1">Username</label>
+        <input type="text" class="form-control" id="username" name="username" value={{profile_id}} readonly>
+    </div>
+    <div class="form-group">
+        <label for="exampleFormControlInput1">Movie Title</label>
+        <input type="text" class="form-control" id="movie_title" name="movie_title" value="{{movie.movie_title}}" readonly>
+    </div>
+    <div class="form-group">
+        <label for="exampleFormControlSelect1">Movie category</label>
+        <select class="form-control" id="category_name" name="category_name" required>
+            <option value="" disabled selected>Choose Category</option>
+                {% for cat in categories %}
+                    <option value="{{cat.category_name}}">{{cat.category_name}}</option>
+                {% endfor %}
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="exampleFormControlTextarea1">Description</label>
+        <textarea class="form-control" id="description" rows="2" name="description" required></textarea>
+    </div>
+    <div class="form-group">
+        <label for="exampleFormControlSelect1">Rating</label>
+        <select class="form-control" id="review_rating" name="review_rating" required>
+            <option value="" disabled selected>Choose a rating, 1 (poor) to 5 (excellent)</option>
+                {% for rating in ratings %}
+                    <option value="{{rating.review_rating}}">{{rating.review_rating}}</option>
+                {% endfor %}
+        </select>
+    </div>
+    <div>
+        <button class="btn btn-dark" type="submit">Add Review</button>
+        <a href="{{url_for('cancelreview', tmdb_id=tmdb_id)}}" type="button" class="btn btn-warning btn-sm">Cancel</a>
+    </div>
 </form>
 
 {% endblock %}
 {% block image %}
-    
     <h4> {{ movie.movie_title}}</h4>
     <img id="basePoster" class="card-header" src="{{movie.url}}" alt="last review">
-     {% endblock image %}
-
+{% endblock image %}
      
 {% block leaderBoard %}
- 
     <li class="list-group-item d-flex justify-content-between align-items-center">
-                        Review average :
-                        <span class="badge badge-primary badge-pill">   {{ movie.vote_average}}</span>
-                    </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                       <span> Release Date : {{ movie.release_date}}</span>
-                </li>
-                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                       <span> {{ movie.overview}}</span>
-                </li>
-    
+        Review average : <span class="badge badge-primary badge-pill">   {{ movie.vote_average}}</span>
+    </li>
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+        <span> Release Date : {{ movie.release_date}}</span>
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+        <span> {{ movie.overview}}</span>
+    </li>
 {% endblock leaderBoard %}

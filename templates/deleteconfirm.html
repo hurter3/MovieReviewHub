@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>DELETE REVIEW CONFIRMATION</h1>
+    <form action="{{ url_for('deletereview', review_id=review._id,tmdb_id=tmdb_id) }}" method="POST">
+        <div class="form-group">
+            <label for="exampleFormControlInput1">Movie Title</label>
+            <input type="text" class="form-control" id="movie_title" name="movie_title" value="{{movie.movie_title}}" readonly>
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlTextarea1">Description</label>
+            <textarea class="form-control" id="description" rows="2" name="description" readonly>{{review.description}}</textarea>
+        </div>
+        <div> 
+            <button class="btn btn-danger" type="submit">Confirm Delete</button>
+            <a href="{{url_for('reviews', tmdb_id=tmdb_id)}}" type="button" class="btn btn-warning btn-sm">Cancel</a>
+        </div>
+    </form>
+{% endblock content %}
+{% block image %}
+    <h4> {{ movie.movie_title}}</h4>
+    <img id="basePoster" class="card-header" src="{{movie.url}}" alt="last review">
+{% endblock image %}
+     

@@ -9,6 +9,12 @@ h1, h2, h3, h5, h6 {
   text-align: center
 }
 
+h1 {
+  color: #f30a0a;
+  text-align: center
+}
+
+
 h4 {
   color: #444444;
   text-align: center;
@@ -160,3 +166,4 @@ main #main-content .media-item .vote_average {
     float: right;
     background-color: #d9dde0;
 }
+

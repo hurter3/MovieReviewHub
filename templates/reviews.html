@@ -1,90 +1,58 @@
 {% extends 'base.html' %}
-{% block content %}
 
+{% block content %}
     <div>
         <a href="{{url_for('addreview',tmdb_id=tmdb_id)}}" type="button" class="btn btn-success btn-sm">Add Review</a>
     </div>             
     
     <div class="accordion" id="accordionsection">
         {% for review in reviews %}    
-        <div class="card">
-            <div class="card-header" id="heading{{review._id}}">
-            <h2 class="mb-0">
-            <div col-9>
-             
-               <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#{{review._id}}" aria-expanded="false" aria-controls="{{review._id}}">
-                <i class="fa fa-chevron-circle-down"></i>       {{review.username}} -  {{review.review_date}}
-                </button>
-                 <div class="badge alert-secondary badge-pill review-rating" title="review rating">
-                            <span> {{ review.review_rating}}</span>
+            <div class="card">
+                <div class="card-header" id="heading{{review._id}}">
+                    <h2 class="mb-0">
+                        <div col-9>
+                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#{{review._id}}" aria-expanded="false" aria-controls="{{review._id}}">
+                            <i class="fa fa-chevron-circle-down"></i>       {{review.username}} -  {{review.review_date}}
+                            </button>
+                            <div class="badge alert-secondary badge-pill review-rating" title="review rating">
+                                <span> {{ review.review_rating}}</span>
                             </div>
-            </div>
-             {% if profile_id == review.username %}
-            <div col-3>
-                <a href="{{url_for('editreview', review_id=review._id,tmdb_id=tmdb_id)}}" type="button" class="btn btn-warning btn-sm">Edit</a>
-                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteConfirmModal">Delete</button> 
-            </div>
-             {% endif %}
-            </h2>
-            </div>
-            <div id="{{review._id}}" class="collapse" aria-labelledby="heading{{review._id}}" data-parent="#accordionsection">
-                <div class="card-body">
-                    <h5>
-                        {{review.category_name}} 
-                    </h5>
-                <div>           
+                        </div>
+                        {% if profile_id == review.username %}
+                        <div col-3>
+                            <a href="{{url_for('editreview', review_id=review._id,tmdb_id=tmdb_id)}}" type="button" class="btn btn-warning btn-sm">Edit</a>
+                            <a href="{{url_for('deleteconfirm', review_id=review._id,tmdb_id=tmdb_id)}}" type="button" class="btn btn-danger btn-sm">Delete</a>
+                             
+                        </div>
+                        {% endif %}
+                    </h2>
+                </div>
+                <div id="{{review._id}}" class="collapse" aria-labelledby="heading{{review._id}}" data-parent="#accordionsection">
+                    <div class="card-body">
+                        <h5>{{review.category_name}}</h5>
+                    </div>
+                    <div>           
                         {{review.description}}
+                    </div>
                 </div>
-                </div>
             </div>
-        </div>
-
-        <!--Start Modal - this is to confirm that the review will be deleted
-                        it needs to be within the for loop otherwise review is undefined -->
-
-        <div class="modal fade" id="deleteConfirmModal" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="deleteConfirmLabel">Confirm to <bold>DELETE</bold> review?</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            
-            <div class="modal-footer">
-            <form action="{{ url_for('deletereview', review_id=review._id,tmdb_id=tmdb_id) }}" method="POST">
-                <input class="btn btn-danger" type="submit" value="Delete">
-            </form>
-            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
-            </div>
-            </div>
-        </div>
-        </div>
-        <!-- End Modal -->
-
         {% endfor %}
     </div>
     
-     {% endblock %}
+{% endblock content%}
 
 {% block image %}
-    
     <h4> {{ movie.movie_title}}</h4>
     <img id="basePoster" class="card-header" src="{{movie.url}}" alt="last review">
-     {% endblock image %}
-
+{% endblock image %}
      
 {% block leaderBoard %}
- 
     <li class="list-group-item d-flex justify-content-between align-items-center">
-                        Review average :
-                        <span class="badge badge-primary badge-pill">   {{ movie.vote_average}}</span>
-                    </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                       <span> Release Date : {{ movie.release_date}}</span>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                       <span> {{ movie.overview}}</span>
-                </li>
-    
+        Review average : <span class="badge badge-primary badge-pill">   {{ movie.vote_average}}</span>
+    </li>
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+        <span> Release Date : {{ movie.release_date}}</span>
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+        <span> {{ movie.overview}}</span>
+    </li>
 {% endblock leaderBoard %}

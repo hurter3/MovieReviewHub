@@ -133,6 +133,20 @@ def updatereview(review_id,tmdb_id):
                         movie=mongo.db.movies.find_one({"tmdb_id" : tmdb_id}),
                         reviews=mongo.db.reviews.find( { 'tmdb_id': tmdb_id }).sort("review_date", -1))
 
+@app.route('/deleteconfirm/<review_id>/<tmdb_id>')
+def deleteconfirm(review_id,tmdb_id):
+    the_review =  mongo.db.reviews.find_one({"_id": ObjectId(review_id)})
+    
+    all_categories =  mongo.db.categories.find()
+    return render_template('deleteconfirm.html',
+                    review=the_review,
+                    tmdb_id=tmdb_id,
+                    movie=mongo.db.movies.find_one({"tmdb_id" : tmdb_id}),
+                    categories=all_categories,
+                    ratings=mongo.db.ratings.find())
+
+
+
 @app.route('/deletereview/<review_id>/<tmdb_id>', methods=["POST"])
 def deletereview(review_id,tmdb_id):
     the_review =  mongo.db.reviews.find_one({"_id": ObjectId(review_id)})

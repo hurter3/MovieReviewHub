@@ -1,47 +1,50 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Form for search criteria and 2 buttons to do js API ajax-->
 <form>
-     <div class="form-group" id="movieForm">
-    <label for="exampleFormControlInput1"></label>
-    <input type="text" class="form-control" id="searchInput" name="searchInput" placeholder="Search and Select a movie to view or write a review">
+    <div class="form-group" id="movieForm">
+        <label for="exampleFormControlInput1"></label>
+        <input type="text" class="form-control" id="searchInput" name="searchInput" placeholder="Search and Select a movie to view or write a review">
     </div>
     <div class="btn-margin">
-     <button onclick="searchMovie('movie'); return false;" class="btn btn-dark btn-spread">Search Movie</button>
-     <button onclick="searchMovie('person'); return false;" class="btn btn-dark btn-spread">Search Person</button>
+        <button onclick="searchMovie('movie'); return false;" class="btn btn-dark btn-spread">Search Movie</button>
+        <button onclick="searchMovie('person'); return false;" class="btn btn-dark btn-spread">Search Person</button>
     </div>
 </form>
-
+<!-- Hidden form that gets populated when a movie is selected from the search list and does a POST-->
 <form id="formInsertMovie" action="{{ url_for('insertmovie')}}" method="POST">
-      <input type="text" id="form_tmdb_id" name="form_tmdb_id" hidden>
-      <input type="text" id="form_movie_title" name="form_movie_title" hidden>
-      <input type="text" id="form_poster_url" name="form_poster_url" hidden>
-      <input type="text" id="form_movie_overview" name="form_movie_overview" hidden> 
-      <input type="text" id="form_release_date" name="form_release_date" hidden>
-      <input type="text" id="form_vote_average" name="form_vote_average" hidden>
- </form>
+    <input type="text" id="form_tmdb_id" name="form_tmdb_id" hidden>
+    <input type="text" id="form_movie_title" name="form_movie_title" hidden>
+    <input type="text" id="form_poster_url" name="form_poster_url" hidden>
+    <input type="text" id="form_movie_overview" name="form_movie_overview" hidden> 
+    <input type="text" id="form_release_date" name="form_release_date" hidden>
+    <input type="text" id="form_vote_average" name="form_vote_average" hidden>
+</form>
 <div id="data"></div>
 {% endblock %}
 
 {% block image %}
-    
     <h4> {{ first_movie.movie_title}}</h4>
     <img id="basePoster" class="card-header" src="{{first_movie.url}}" alt="last review">
-     {% endblock image %}
+{% endblock image %}
 
 {% block leaderBoard %}
- <li class="list-group-item list-group-item-light" >
-  <h6> Top voted Movie</h6> </li>
+    <li class="list-group-item list-group-item-light" >
+        <h6> Top voted Movie</h6>
+    </li>
     <li class="list-group-item d-flex justify-content-between align-items-center">
-                        Review average :
-                        <span class="badge badge-primary badge-pill">   {{ first_movie.vote_average}}</span>
-                    </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                       <span> Release Date : {{ first_movie.release_date}}</span>
-                </li>
-<li class="list-group-item list-group-item-light" >
-                <h6>Most reviews posted by</h6></li>  
-                   {% for user in top_user%}
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    {{ user.username}} <span class="badge badge-primary badge-pill">{{ user.reviews_made}}</span>
-                </li>
-                {%endfor%}           
+        Review average : <span class="badge badge-primary badge-pill">   {{ first_movie.vote_average}}</span>
+    </li>
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+        <span> Release Date : {{ first_movie.release_date}}</span>
+    </li>
+    <li class="list-group-item list-group-item-light" >
+        <h6>Most reviews posted by</h6>
+    </li>  
+        {% for user in top_user%}
+            <li class="list-group-item d-flex justify-content-between align-items-center">{{ user.username}}
+                <span class="badge badge-primary badge-pill">{{ user.reviews_made}}</span>
+            </li>
+        {%endfor%}         
 {% endblock leaderBoard %}
