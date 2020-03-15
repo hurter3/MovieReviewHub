@@ -10,13 +10,19 @@
 	- [**Project Overview**](#project-overview)
 			- [Database](#database)
 			- [Pages](#pages)
-
+    - [**Testing**](#testing)
+			- [Code inspection](#code-inspection)
+			- [Navigational testing](#navigational-testing)
+            - [Database updates](#database-updates)
+			- [General Testing](#general-testing)
+     - [**Deployment**](#deployment)
+     - [**Credits**](#credits)
 <hr />
 
 ## **Movie Review Hub**
 
-Welcome to my Data Centric Development Milestone project as part of my [Code Institute (CI)](https://courses.codeinstitute.net/) Full Stack Web Development course.
-
+Welcome to my Data Centric Development Milestone project as part of my [Code Institute (CI)](https://courses.codeinstitute.net/) Full Stack Web Development course.<br>
+Final deployed site is here: https://movie-review-hub.herokuapp.com/
 <hr />
 
 ## **Project Requirements**
@@ -58,14 +64,14 @@ Welcome to my Data Centric Development Milestone project as part of my [Code Ins
 
 ### Database
 
-- There are 5 collections, Users / Movies / Reviews / Genre & Ratings.
+- There are 5 collections, Users / Movies / Reviews / Categories & Ratings.
 - I decided to split Movies and Reviews to create a parent/children relationship which could also have been achieved by having a sub array of reviews within movies but not as manageable.
 
 ### Pages
 
 - There are 7 pages to the project.
 
-- **All page**
+- **Pages**
   - **Navigation**
     - The same Navbar and feel is used for all the pages
     - Browse the home page and select a movie to review
@@ -94,6 +100,9 @@ Welcome to my Data Centric Development Milestone project as part of my [Code Ins
 
   - **Delete page (deletereview.html)**
    - The user can only delete their own review and will be presented a confirm / cancel modal **still to be built**.
+
+- **Delete Confirm page (deletconfirm.html)**
+   - Confirm or cancel the delete functionality.
   
   - **Search page (search.html)**
    - The user can search for a title or part of a tile / person that does a API get to TMDB (The Movie Data Base - open) and present the user with a listing. If they select a movie that has is has reviews in the mongoDB collection then they will be presented the reviews page otherwise they will be display the addreview screen to entice the user to write a review.
@@ -105,5 +114,168 @@ Welcome to my Data Centric Development Milestone project as part of my [Code Ins
    - Displays a basic register page username,password and confirm password that has appropriate flash messages but the password is just a visible string in the users collection and merely used to control the ability for users to add, edit or delete reviews.
 
 
+<hr />
+
+## **Testing**
+
+### Code inspection 
+
+  - [W3C Markup Validation Service](https://validator.w3.org/)
+      
+  - [JSHint](https://jshint.com/) 
 
 
+#### Navigational Testing
+
+<table>
+    <tr>
+        <th>Action</th>
+        <th>Status</th>
+    </tr>
+    <tr>
+        <td>Clicking on Movie Review Hub title takes user to homepage</td>
+        <td>Successful</td>
+    </tr>
+    <tr>
+        <td>Clicking on Home tab takes user to homepage</td>
+        <td>Successful</td>
+    </tr>
+    <tr>
+        <td>Clicking on Search takes user to search form</td>
+        <td>Successful</td>
+    </tr>
+    <tr>
+        <td>Click on Access provides the Login and Register dropdown to relevant pages.</td>
+        <td>Successful</td>
+    </tr>
+    <tr>
+        <td>On home page clicking on any movie will take you to the reviews page.</td>
+        <td>Successful</td>
+    </tr>
+    <tr>
+        <td>On reviews page clicking on 'add' will take you to add review page with 2 buttons.</td>
+        <td>Successful</td>
+    </tr>
+    <tr>
+        <td>On reviews page there will be a edit and delete button for all reviews made by the user and NOT for any other user.</td>
+        <td>Successful</td>
+    </tr>
+    <tr>
+        <td>The delete button will take you to a delete confirmation screen.</td>
+        <td>Successful</td>
+    </tr>
+</table>
+
+#### Database updates
+
+<table>
+    <tr>
+        <th>Collections</th>
+        <th>Movie</th>
+        <th>Reviews</th>
+        <th>Users</th>
+        <th>Categories</th>
+        <th>Ratings</th>
+    </tr>
+    <tr>
+        <td>Initial DB data</td>
+        <td> - </td>
+        <td> - </td>
+        <td> - </td>
+        <td>Selection List</td>
+        <td>Selection List</td>
+    </tr>
+    <tr>
+        <td>Register</td>
+        <td> - </td>
+        <td> - </td>
+        <td>Insert</td>
+        <td> - </td>
+        <td> - </td>
+    </tr>
+    <tr>
+        <td>Add review</td>
+        <td>Insert reviews_count set to 1</td>
+        <td>Insert</td>
+        <td>Update review_made incremented</td>
+        <td> - </td>
+        <td> - </td>
+    </tr>
+    <tr>
+        <td>Add 2nd review</td>
+        <td>Update reviews_count incremented</td>
+        <td>Insert</td>
+        <td>Update review_made incremented</td>
+        <td> - </td>
+        <td> - </td>
+    </tr>
+    <tr>
+        <td>Delete review</td>
+        <td>Update reviews_count decreased</td>
+        <td>Delete</td>
+        <td>Update review_made decreased</td>
+        <td> - </td>
+        <td> - </td>
+    </tr>
+    <tr>
+        <td>Delete 2nd review</td>
+        <td>Delete</td>
+        <td>Delete</td>
+        <td>Update review_made decreased</td>
+        <td> - </td>
+        <td> - </td>
+    </tr>
+</table>
+
+
+#### General Testing
+
+While developing I used DEBUG=TRUE to help iron out all the routing and undefined issues.
+Print and console.log were extensively used to ensure the correct data was being passed.
+The developer tool was used to test various media sizes so the elements gave a good UX.  
+
+[**To top**](#Table-of-Contents)
+
+
+<hr />
+
+## **Deployment**
+
+In your Heroku account, create a new app.
+GitHub has been used throughout this project to maintain version control as feature are added. After adding a new feature, the code is pushed to GitHub.
+The site has been deployed using Heroku. The process for deploying to Heroku is as follows:
+
+  - created [requirements.txt](https://github.com/Hurter3/MovieReviewHub/requirements.txt) that **Heroku** knows which packages are required for the application to run and install them.
+  - created [Procfile](https://github.com/Hurter3/MovieReviewHub/master/Procfile) that **Heroku**  knows what kind of application is this.
+
+  - **Settings**
+    - Added **Config Vars**
+      - IP `0.0.0.0`
+      - PORT `5000`
+      - MONGO_URI
+      - SECRET_KEY
+      - APIKEY
+
+    - **Deploy**
+
+Ensure in your app you have in your app files in GitHub a Procfile with the following: 'web: python app.py', and you project requirements in a requirements.txt file.
+In Heroku, in your app and under the 'deploy' tab, choose the GitHub deployment method. In the app connected to GitHub section find and select the app you wish to deploy.
+Choose either automatic or manual deploys.
+
+Install requirements with $ pip3 install -r requirements.txt
+Run the app with $ python3 app.py
+          
+[**To top**](#Table-of-Contents)
+
+<hr />
+
+
+
+## **Credits**
+
+The code instute tutors must be mentioned for their valuable recomendations and patience.<br>
+Appreciation must also be said to The Movie DataBase (TMDB) for their open API data which was used for this project.
+<hr />
+
+
+[**To top**](#Table-of-Contents)
