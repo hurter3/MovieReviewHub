@@ -17,8 +17,10 @@
         </div>
     </form>
 {% endblock content %}
+
 {% block image %}
-    <h4> {{ movie.movie_title}}</h4>
-    <img id="basePoster" class="card-header" src="{{movie.url}}" alt="last review">
+    <div class="base-title"> {{ movie.movie_title}}</div>
+    <div class="base-title"><img id="basePoster" class="card-header" src="{{movie.url}}" alt="last review"> </div>
 {% endblock image %}
      
+
