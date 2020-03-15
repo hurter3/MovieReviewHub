@@ -164,7 +164,7 @@ main #main-content .media-item .vote_average {
 }
 .review-rating{
     float: right;
-    background-color: #d9dde0;
+    font-size: 12px;
 }
 
 .about{ font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
