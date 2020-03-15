@@ -1,8 +1,13 @@
+
+/*----------General---------*/
+
 body {
   background: #fafafa;
   color: #333333;
   margin-top: 5rem;
 }
+
+/*----------HEADERS---------*/
 
 h1, h3, h5, h6 {
   color: #444444;
@@ -14,7 +19,6 @@ h2 {
   text-align: center
 }
 
-
 h4 {
   color: #444444;
   text-align: center;
@@ -23,6 +27,9 @@ h4 {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+/*----------Main theme---------*/
+
 .bg-steel {
   background-color: #5f788a;
 }
@@ -62,10 +69,8 @@ main #main-content .media-item {
 }
 
 main #main-content .media-item .rating {
-    
     height:15px;
     width: 30px;
-    
   }
 
 main #main-content .media-item .vote_average {
@@ -88,10 +93,6 @@ main #main-content .media-item .vote_average {
   float: left;
   }
 
-.clearfix {
-  overflow: auto;
-}
-
 .lib-panel {
     margin-bottom: 20Px;
 }
@@ -105,7 +106,6 @@ main #main-content .media-item .vote_average {
     padding: 0;
     background-color: #FFFFFF;
 }
-
 
 .lib-panel .lib-row {
     padding: 0 20px 0 20px;
@@ -169,5 +169,4 @@ main #main-content .media-item .vote_average {
 
 .about{ font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 font-size: 20px;
-
 }
