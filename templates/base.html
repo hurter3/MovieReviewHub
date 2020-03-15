@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -10,8 +10,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Personal CSS styling -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
-    <!-- included this line to prevent "GET /favicon.ico HTTP/1.1" 404 --->
-    <link rel="shortcut icon" href="">
+    <!-- included this line to prevent "GET /favicon.ico HTTP/1.1" 404 -->
+    <link rel="shortcut icon" href="#">
   
     <!-- Title appended to default title if passed through to rendered template -->
     {% if title %}
@@ -38,21 +38,21 @@
                         <!-- Navbar Right Side -->
                         <div class="navbar-nav">
                             <a class="nav-item nav-link" href="{{url_for('search')}}">Movie Search</a>
-                                <li class="nav-item dropdown">
+                                <div class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Access</a>
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                         <a class="dropdown-item" href="{{url_for('login')}}">Login</a>
                                     <a class="dropdown-item" href="{{url_for('register')}}">Sign Up</a>
                                     </div>
-                                </li>
+                                </div>
                         </div>
                     </div>
                 </div>
             </nav>
         </header>
 
-        <main role="main" class="container">
+        <main class="container">
             <div class="row">
                 <div class="col-md-8">
                     {% with messages = get_flashed_messages(with_categories=true) %}
@@ -67,13 +67,9 @@
                     {% block content %}{% endblock %}
                 </div>
                 <div class="col-md-4">
-                    <div class="content-section">
-                        <p class='text-muted'>
-                        <ul class="llist-group">   
-                            {% block image %}{% endblock %}
-                            {% block leaderBoard %}{% endblock %} 
-                        </ul>
-                        </p>
+                    <div class="content-section text-muted align-center">
+                        {% block image %}{% endblock %}
+                        {% block leaderBoard %}{% endblock %} 
                     </div>
                 </div>  
             </div>

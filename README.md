@@ -120,6 +120,7 @@ Final deployed site is here: https://movie-review-hub.herokuapp.com/
 ### Code inspection 
 
   - [W3C Markup Validation Service](https://validator.w3.org/)
+    Due to using Flask I needed to run the app and then view the page source to cut and paste the code into the validator to check. 
       
   - [JSHint](https://jshint.com/) 
     - Output :
