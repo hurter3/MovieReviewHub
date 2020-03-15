@@ -55,7 +55,7 @@ def reviews():
             tmdb_id=tmdb_id,
             profile_id = session['user'],
             movie=mongo.db.movies.find_one({"tmdb_id" : tmdb_id}),
-            categories=mongo.db.categories.find(),
+            categories=mongo.db.categories.find().sort("category_name", 1),
             ratings=mongo.db.ratings.find())
 
 # Add review page has 2 collections used for select item listings
@@ -65,7 +65,7 @@ def addreview(tmdb_id):
             tmdb_id=tmdb_id,
             profile_id = session['user'],
             movie=mongo.db.movies.find_one({"tmdb_id" : tmdb_id}),
-            categories=mongo.db.categories.find(),
+            categories=mongo.db.categories.find().sort("category_name", 1),
             ratings=mongo.db.ratings.find())
     
 # One review is inserted to the reviews collection. The movie review count is incremented with the datetime stamp.
@@ -106,12 +106,11 @@ def insertreview():
 @app.route('/editreview/<review_id>/<tmdb_id>')
 def editreview(review_id,tmdb_id):
     the_review =  mongo.db.reviews.find_one({"_id": ObjectId(review_id)})
-    all_categories =  mongo.db.categories.find()
     return render_template('editreview.html',
                     review=the_review,
                     tmdb_id=tmdb_id,
                     movie=mongo.db.movies.find_one({"tmdb_id" : tmdb_id}),
-                    categories=all_categories,
+                    categories=mongo.db.categories.find().sort("category_name", 1),
                     ratings=mongo.db.ratings.find())
     
 # Update review is triggered from the edit review page
@@ -137,12 +136,11 @@ def updatereview(review_id,tmdb_id):
 @app.route('/deleteconfirm/<review_id>/<tmdb_id>')
 def deleteconfirm(review_id,tmdb_id):
     the_review =  mongo.db.reviews.find_one({"_id": ObjectId(review_id)})
-    all_categories =  mongo.db.categories.find()
     return render_template('deleteconfirm.html',
                     review=the_review,
                     tmdb_id=tmdb_id,
                     movie=mongo.db.movies.find_one({"tmdb_id" : tmdb_id}),
-                    categories=all_categories,
+                    categories=mongo.db.categories.find().sort("category_name", 1),
                     ratings=mongo.db.ratings.find())
 
 # The delete review is only displayed for your own reviews.
@@ -195,7 +193,7 @@ def insertmovie():
                             tmdb_id=tmdb_id,
                             profile_id=session['user'],
                             movie=mongo.db.movies.find_one({"tmdb_id" : tmdb_id}),
-                            categories=mongo.db.categories.find(),
+                            categories=mongo.db.categories.find().sort("category_name", 1),
                             ratings=mongo.db.ratings.find())        
     else:
         movies = mongo.db.movies
@@ -214,7 +212,7 @@ def insertmovie():
                             tmdb_id=tmdb_id,
                             profile_id= session['user'],
                             movie=mongo.db.movies.find_one({"tmdb_id" : tmdb_id}),
-                            categories=mongo.db.categories.find(),
+                            categories=mongo.db.categories.find().sort("category_name", 1),
                             ratings=mongo.db.ratings.find())  
     
 # The cancelreview is reached from the addreview screen but the user decides not to add a review.

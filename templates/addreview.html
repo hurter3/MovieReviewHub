@@ -27,7 +27,7 @@
     <div class="form-group">
         <label for="exampleFormControlSelect1">Rating</label>
         <select class="form-control" id="review_rating" name="review_rating" required>
-            <option value="" disabled selected>Choose a rating, 1 (poor) to 5 (excellent)</option>
+            <option value="" disabled selected>Choose a rating, 1 (poor) to 10 (excellent)</option>
                 {% for rating in ratings %}
                     <option value="{{rating.review_rating}}">{{rating.review_rating}}</option>
                 {% endfor %}

@@ -69,9 +69,8 @@ Final deployed site is here: https://movie-review-hub.herokuapp.com/
 
 ### Pages
 
-- There are 7 pages to the project.
+- There are 9 pages to the project.
 
-- **Pages**
   - **Navigation**
     - The same Navbar and feel is used for all the pages
     - Browse the home page and select a movie to review
@@ -81,37 +80,37 @@ Final deployed site is here: https://movie-review-hub.herokuapp.com/
     - The add, edit and cancel screens have a cancel button incase the user changes their mind.
  
   - **Landing page (home.html)**
-   - The user is presented with a listing of all movies that have reviews with the most recent being on the top. 
-   - The green badge on each movie represent the review count and increases or decreases depending if a review is added or deleted.
+    - The user is presented with a listing of all movies that have reviews with the most recent being on the top. 
+    - The green badge on each movie represent the review count and increases or decreases depending if a review is added or deleted.
   
   - **Reviews page (reviews.html)**
-   - A list of ALL reviews for the selected movie.
-   - Each review will have the username date/time and review score with an accordian to dislay the review idf selected to save real estate on the screen and provide a better UX.
-   - A user will need to login to add, edit or delete their own reviews. 
+    - A list of ALL reviews for the selected movie.
+    - Each review will have the username date/time and review score with an accordian to dislay the review idf selected to save real estate on the screen and provide a better UX.
+    - A user will need to login to add, edit or delete their own reviews. 
 
   - **Add page (addreview.html)**
-   - The username and movie title will be prepopulated and read only fields.
-   - The Genre and rating selection boxes are mongoDB collections.
-   - The Add review will add the review to the reviews collections and display the reviews screen.
-   - When the user navigates to the home page the movie they reviewed will be the FIRST in the listing and badge count will be incremented.
+    - The username and movie title will be prepopulated and read only fields.
+    - The Genre and rating selection boxes are mongoDB collections.
+    - The Add review will add the review to the reviews collections and display the reviews screen.
+    - When the user navigates to the home page the movie they reviewed will be the FIRST in the listing and badge count will be incremented.
 
   - **Edit page (editreview.html)**
-   - This presents the user with the ability of changing their review or rating.
+    - This presents the user with the ability of changing their review or rating.
 
   - **Delete page (deletereview.html)**
-   - The user can only delete their own review and will be presented a confirm / cancel modal **still to be built**.
+    - The user can only delete their own review and will be presented a confirm / cancel modal **still to be built**.
 
-- **Delete Confirm page (deletconfirm.html)**
-   - Confirm or cancel the delete functionality.
+  - **Delete Confirm page (deletconfirm.html)**
+    - Confirm or cancel the delete functionality.
   
   - **Search page (search.html)**
-   - The user can search for a title or part of a tile / person that does a API get to TMDB (The Movie Data Base - open) and present the user with a listing. If they select a movie that has is has reviews in the mongoDB collection then they will be presented the reviews page otherwise they will be display the addreview screen to entice the user to write a review.
+    - The user can search for a title or part of a tile / person that does a API get to TMDB (The Movie Data Base - open) and present the user with a listing. If they select a movie that has is has reviews in the mongoDB collection then they will be presented the reviews page otherwise they will be display the addreview screen to entice the user to write a review.
   
   - **Login page (login.html)**
-   - Displays the login screen for a username and password that has appropriate flash messages.
+    - Displays the login screen for a username and password that has appropriate flash messages.
 
-   - **Register page (register.html)**
-   - Displays a basic register page username,password and confirm password that has appropriate flash messages but the password is just a visible string in the users collection and merely used to control the ability for users to add, edit or delete reviews.
+  - **Register page (register.html)**
+    - Displays a basic register page username,password and confirm password that has appropriate flash messages but the password is just a visible string in the users collection and merely used to control the ability for users to add, edit or delete reviews.
 
 
 <hr />
@@ -123,7 +122,13 @@ Final deployed site is here: https://movie-review-hub.herokuapp.com/
   - [W3C Markup Validation Service](https://validator.w3.org/)
       
   - [JSHint](https://jshint.com/) 
+    - Output :
 
+    There are 5 functions in main.js.
+    Function with the largest signature take 1 arguments, while the median is 1.
+    Largest function has 26 statements in it, while the median is 4.
+    The most complex function has a cyclomatic complexity value of 7 while the median is 1.
+    26 warnings.
 
 #### Navigational Testing
 
@@ -233,6 +238,7 @@ Final deployed site is here: https://movie-review-hub.herokuapp.com/
 While developing I used DEBUG=TRUE to help iron out all the routing and undefined issues.
 Print and console.log were extensively used to ensure the correct data was being passed.
 The developer tool was used to test various media sizes so the elements gave a good UX.  
+Tested with different input data and selections to ensure the appropriate FLASH messages were displayed.
 
 [**To top**](#Table-of-Contents)
 
@@ -269,12 +275,21 @@ Run the app with $ python3 app.py
 
 <hr />
 
+## **Future Enhancments**
 
+ERROR handling and introduce TV programs.
+
+<hr />
+
+
+[**To top**](#Table-of-Contents)
 
 ## **Credits**
 
 The code instute tutors must be mentioned for their valuable recomendations and patience.<br>
 Appreciation must also be said to The Movie DataBase (TMDB) for their open API data which was used for this project.
+I used www.w3schools.com and www.stackoverflow in conjuction with the Task manager mini project for the accordian effect.
+
 <hr />
 
 
