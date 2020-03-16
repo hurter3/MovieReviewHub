@@ -1,12 +1,4 @@
 
-/*----------General---------*/
-
-body {
-  background: #fafafa;
-  color: #333333;
-  margin-top: 5rem;
-}
-
 /*----------HEADERS---------*/
 
 h1, h3, h5, h6 {
@@ -28,21 +20,12 @@ h4 {
   text-overflow: ellipsis;
 }
 
-.base-title {
-  color: #444444;
-  text-align: center;
-  font-size: 20px; 
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  padding-bottom: 5px;
-}
 
 .align-center {
     text-align: center;
 }
 
-/*----------Main theme---------*/
+/*----------Nav theme---------*/
 
 .bg-steel {
   background-color: #5f788a;
@@ -59,6 +42,8 @@ h4 {
 .site-header .navbar-nav .nav-link.active {
   font-weight: 500;
 }
+
+/*----------Home---------*/
 
 .content-section {
   background: #ffffff;
@@ -106,6 +91,8 @@ main #main-content .media-item .vote_average {
 .img {
   float: left;
   }
+
+/*---Below is to customize the search results screen build in main.js-----*/
 
 .lib-panel {
     margin-bottom: 20Px;
@@ -160,8 +147,12 @@ main #main-content .media-item .vote_average {
     box-shadow: 0 0 10px 0 rgba(0,0,0,.10);
 }
 
-.no-padding {
-    padding: 0;
+/*----------General---------*/
+
+body {
+  background: #fafafa;
+  color: #333333;
+  margin-top: 5rem;
 }
 
 .btn-margin {
@@ -183,4 +174,14 @@ main #main-content .media-item .vote_average {
 
 .about{ font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 font-size: 20px;
+}
+
+.base-title {
+  color: #444444;
+  text-align: center;
+  font-size: 20px; 
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-bottom: 5px;
 }

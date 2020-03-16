@@ -1,21 +1,13 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h2>DELETE REVIEW CONFIRMATION</h2>
-    <form action="{{ url_for('deletereview', review_id=review._id,tmdb_id=tmdb_id) }}" method="POST">
-        <div class="form-group">
-            <label>Movie Title</label>
-            <input type="text" class="form-control" id="movie_title" name="movie_title" value="{{movie.movie_title}}" readonly>
+        <div class="col-md-3 offset-md-3">
+            <h5>DELETE CONFIRMATION</h5>
+            <form action="{{ url_for('deletereview', review_id=review._id,tmdb_id=tmdb_id) }}" method="POST">
+                <button class="btn btn-danger" type="submit">Delete</button>
+                <a href="{{url_for('reviews', tmdb_id=tmdb_id)}}" class="btn btn-sm">Cancel</a>
+            </form>
         </div>
-        <div class="form-group">
-            <label>Description</label>
-            <textarea class="form-control" id="description" rows="2" name="description" readonly>{{review.description}}</textarea>
-        </div>
-        <div> 
-            <button class="btn btn-danger" type="submit">Confirm Delete</button>
-            <a href="{{url_for('reviews', tmdb_id=tmdb_id)}}" class="btn btn-sm">Cancel</a>
-        </div>
-    </form>
 {% endblock content %}
 
 {% block image %}
