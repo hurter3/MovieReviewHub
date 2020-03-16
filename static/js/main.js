@@ -2,7 +2,7 @@
 // the if statement to build a list of movies with the tmdb_id key on each button and injected in the data element. 
 function searchMovie(searchBy) {
     let query = document.getElementById("searchInput").value;
-    let key = '51977f79d5e5c6689cf9b9ec7dcc8716';
+    let key = config.apiKey;
     $.ajax({    
         type: 'GET',
         url : "https://api.themoviedb.org/3/search/" + searchBy + "?api_key=" + key + "&language=en-US&query=" + query + "&page=1&include_adult=false",
