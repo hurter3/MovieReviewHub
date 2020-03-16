@@ -23,6 +23,7 @@
 ## **Movie Review Hub**
 
 Welcome to my Data Centric Development Milestone project as part of my [Code Institute (CI)](https://courses.codeinstitute.net/) Full Stack Web Development course.<br>
+The github repository is: https://github.com/hurter3/MovieReviewHub.
 Final deployed site is here: https://movie-review-hub.herokuapp.com/
 <hr />
 
